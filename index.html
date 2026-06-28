@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0" />
+    
+    <!-- CONFIGURACIÓN DE OPEN GRAPH (OG SHARE) MEJORADA -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://conectacard.github.io/bmw.ags/" />
+    <meta property="og:title" content="BMW Euromotors de Aguascalientes | Conecta Card" />
+    <meta property="og:description" content="Descubre el placer de conducir. Cotiza tu próximo BMW or agenda una prueba de manejo hoy mismo." />
+    
+    <!-- Ruta absoluta apuntando a la imagen en la carpeta raíz -->
+    <meta property="og:image" content="https://conectacard.github.io/bmw.ags/og_bmw.jpg" />
+    <meta property="og:image:secure_url" content="https://conectacard.github.io/bmw.ags/og_bmw.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <title>BMW Euromotors de Aguascalientes | MAS VENTA</title>
+    
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <button id="btn-audio-control" class="audio-toggle" onclick="toggleAudioGlobal()">
+        <i id="audio-icon" class="fas fa-volume-up"></i>
+    </button>
+
+    <section id="portada-hub" class="main-hub">
+        <header class="magazine-header">
+            <div class="header-title-container">
+                <h1 class="agency-name">BMW Euromotors de Aguascalientes</h1>
+                <div class="download-track-container">
+                    <p class="download-text">Descarga nuestro spot de audio</p>
+                    <a href="assets/sounds/spot-intro.mp3" download="spot-intro.mp3" class="btn-download-audio" onclick="playClickSound()">
+                        <i class="fas fa-download"></i> DESCARGAR
+                    </a>
+                </div>
+            </div>
+            <img src="assets/brand/logo.png" alt="Logo BMW" class="agency-logo">
+        </header>
+
+        <div class="mosaic-grid">
+            <div class="mosaic-item hero-block" onclick="openProfileZoom()">
+                <img id="profile-pic-img" src="assets/hero/main-photo.jpg" alt="BMW Euromotors de Aguascalientes">
+                <div class="hero-overlay">
+                    <span class="edition-label">CONECTA CARD</span>
+                    <h2 class="hero-title">BMW Euromotors de Aguascalientes</h2>
+                </div>
+            </div>
+
+            <div class="mosaic-item menu-block">
+                <div class="magazine-menu-grid">
+                    <button class="mag-btn" onclick="showAppContent('cat1')">
+                        <span class="num">01</span> QUIÉNES SOMOS
+                    </button>
+                    <button class="mag-btn" onclick="showAppContent('cat2')">
+                        <span class="num">02</span> EXCELENCIA
+                    </button>
+                    <button class="mag-btn" onclick="showAppContent('cat3')">
+                        <span class="num">03</span> CLIENTES FELICES
+                    </button>
+                    <button class="mag-btn" onclick="showAppContent('cat4')">
+                        <span class="num">04</span> CONTACTO
+                    </button>
+                </div>
+            </div>
+
+            <div class="mosaic-item video-block" onclick="openYouTubeVideo()">
+                <div class="video-preview" id="yt-iframe-container">
+                    <img src="assets/hero/video-thumb.jpg" alt="BMW Test Drive" id="yt-thumb-img">
+                    <div class="yt-play-mini" id="yt-play-icon"><i class="fab fa-youtube"></i></div>
+                </div>
+                <span class="block-label">TEST DRIVE / RECORRIDO VIRTUAL</span>
+            </div>
+
+            <!-- BLOQUE DE EVOLUCIÓN COMPLETAMENTE REUBICADO ABAJO DEL VIDEO -->
+            <div class="mosaic-item custom-actions-block">
+                <button class="btn-custom-action btn-recommended-businesses" onclick="openBrandModal('modal-negocios')">
+                    VIVE CON NOSOTROS LA EVOLUCION
+                </button>
+            </div>
+
+            <div class="mosaic-item lead-block">
+                <button type="button" onclick="abrirMenu()" class="btn-shiny-gold shine-effect">
+                    <i class="fas fa-car-side" style="margin-right: 8px;"></i> ¡ELIGE A TU ASESOR ESPECIALIZADO!
+                </button>
+            </div>
+
+            <!-- MENÚ DE CONTACTO - SE GENERA DINÁMICAMENTE POR SCRIPT -->
+            <div id="miMenuContacto" class="menu-oculto" onclick="cerrarMenu()">
+                <div class="menu-contenido" onclick="event.stopPropagation()">
+                    <div class="bloque-mapa-guia" style="text-align: center; padding: 5px 0 15px 0; width: 100%;">
+                        <h3 style="font-size: 0.95rem; font-weight: bold; color: #fff; text-transform: uppercase; margin-bottom: 4px; font-family: 'Montserrat', sans-serif;">Contacta a tu Asesor Digital</h3>
+                        <p style="font-size: 0.7rem; color: rgba(255,255,255,0.7); margin-bottom: 12px; font-family: 'Montserrat', sans-serif; padding: 0 10px;">Elige cualquiera de nuestras sucursales para recibir atención inmediata.</p>
+                        
+                        <!-- CÓMO LLEGAR DIRECTO -->
+                        <a id="boton-como-llegar-principal" 
+                           href="https://maps.app.goo.gl/DhjuGyGnGQF74pzT9" 
+                           target="_blank" 
+                           class="btn-menu maps-btn" 
+                           style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; font-weight: bold; background-color: #f80101; color: white; border-radius: 8px; text-decoration: none; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; box-shadow: 0 4px 12px rgba(0,0,0,0.3); border: 1px solid var(--brand-accent);"
+                           onclick="playClick()">
+                             <i class="fas fa-location-arrow"></i> CÓMO LLEGAR 
+                        </a>
+                    </div>
+
+                    <!-- Contenedor inyectado por JS -->
+                    <div id="contenedor-sucursales"></div>
+                    
+                    <!-- BOTÓN DE CIERRE FIJO -->
+                    <button onclick="cerrarMenu()" class="btn-cerrar">Cerrar</button>
+                </div>
+            </div>
+
+            <div class="mosaic-item share-block">
+                <button class="btn-magazine-share" onclick="shareExperienceRobust()">
+                    <i class="fas fa-share-alt"></i> Compré en BMW AGS. ¡Excelente experiencia! Te la comparto.
+                </button>
+            </div>
+            
+            <div class="mosaic-item custom-actions-block">
+                <div class="credits-altpro-compact">
+                    <span class="produced-by">PRODUCED BY CONECTA CARD</span>
+                    <a href="https://wa.me/524491472336" target="_blank" class="altpro-link">
+                        <i class="fab fa-whatsapp"></i> 449 147 2336
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="modal-negocios" class="overlay-modal brand-custom-modal" style="display: none;" onclick="closeBrandModal('modal-negocios')">
+        <button class="btn-close-circular" onclick="closeBrandModal('modal-negocios')">×</button>
+        <div class="network-scroll-box" onclick="event.stopPropagation()">
+            <h3 class="network-modal-title"><i class="fas fa-car"></i> VIVE LA EVOLUCIÓN</h3>
+            <p class="network-modal-subtitle">Descubre lo que nos hace diferentes</p>
+            <div class="network-buttons-grid">
+                <button class="btn-network-link" onclick="openNetworkCard('https://www.youtube.com/shorts/aB8IycD_IfU')"><i class="fas fa-car-side"></i> EL LUJO QUE MERECES</button>
+                <button class="btn-network-link" onclick="openNetworkCard('https://www.youtube.com/shorts/YtZ5xj1DRik')"><i class="fas fa-charging-station"></i> TECNOLOGÍA E INNOVACIÓN</button>
+                <button class="btn-network-link" onclick="openNetworkCard('https://www.youtube.com/shorts/ehku-Th9FtI')"><i class="fas fa-tags"></i> ESTE ES TU MOMENTO</button>
+                <button class="btn-network-link" onclick="openNetworkCard('https://www.youtube.com/shorts/V1-pfD5sHvc')"><i class="fas fa-wrench"></i> ASISTENCIA ESPECIALIZADA</button>
+            </div>
+        </div>
+    </div>
+
+    <main id="dynamic-content-layer" class="content-overlay" style="display: none;">
+        <button class="btn-close-circular" onclick="closeAppContent()">×</button>
+        <section class="tab-pane" id="cat1-pane" style="display: none;"><div id="grid-cat1" class="carousel-zigzag-grid"></div></section>
+        <section class="tab-pane" id="cat2-pane" style="display: none;"><div id="grid-cat2" class="carousel-zigzag-grid"></div></section>
+        <section class="tab-pane" id="cat3-pane" style="display: none;"><div id="grid-cat3" class="carousel-zigzag-grid"></div></section>
+        <section class="tab-pane" id="cat4-pane" style="display: none;">
+            <h2 class="pane-title">CONTACTO</h2>
+            <div class="contact-panel-robust">
+                <p class="address-tag"><i class="fas fa-building"></i> ¡Síguenos en nuestras redes y canales oficiales!</p>
+                <div class="social-vertical-stack">
+                    <a id="link-web-chirey" href="https://www.bmw.com.mx/es/distribuidores/bmw-aguascalientes.html" target="_blank" class="stack-btn fb-color" style="background-color: #002d62;"><i class="fas fa-globe"></i> SITIO WEB OFICIAL</a>
+                    <a id="link-fb-chirey" href="https://www.facebook.com/BMWMexico" target="_blank" class="stack-btn fb-color"><i class="fab fa-facebook"></i> FACEBOOK OFICIAL</a>
+                    <a id="link-ig-chirey" href="https://www.instagram.com/bmwdemexico/" target="_blank" class="stack-btn" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: #fff;"><i class="fab fa-instagram"></i> INSTAGRAM</a>
+                </div>
+                <div class="qr-reubicado-container">
+                    <h4 class="qr-section-heading">ESCANEA EL CÓDIGO QR</h4>
+                    <img src="assets/hero/qr.png" alt="QR Local" class="qr-embedded-img">
+                    <a href="assets/hero/qr.png" download="qr.png" class="btn-download-qr-integrated" onclick="playClickSound()">
+                        <i class="fas fa-cloud-download-alt"></i> COMPARTIR QR
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="lightbox" class="overlay-modal" style="display: none;" onclick="closeLightbox()">
+        <button class="btn-close-circular" onclick="closeLightbox()">×</button>
+        <div class="zoom-premium-content" onclick="event.stopPropagation()">
+            <button class="btn-nav-lightbox btn-prev" onclick="changeLightboxImage(-1)"><i class="fas fa-chevron-left"></i></button>
+            <div class="zoom-image-wrapper">
+                <img id="lightbox-image" src="" alt="Zoom">
+                <img src="assets/brand/logo.png" class="mini-logo-zoom-overlay">
+            </div>
+            <button class="btn-nav-lightbox btn-next" onclick="changeLightboxImage(1)"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <div id="text-zoom-modal" class="overlay-modal" style="display: none;" onclick="closeTextZoom()">
+        <div class="text-zoom-card" onclick="event.stopPropagation()">
+            <button class="btn-close-circular" style="top:-20px; right:-20px;" onclick="closeTextZoom()">×</button>
+            <div class="card-branding-header" style="display: flex; align-items: center;">
+                <img src="assets/brand/logo.png" class="card-logo" style="width: 40px; margin-right: 10px;">
+                <h3 id="text-zoom-title"></h3>
+            </div>
+            <hr class="gold-divider" style="border: 0; border-top: 1px solid var(--brand-accent); margin: 15px 0;">
+            <div id="text-zoom-content" style="white-space: pre-line;"></div>
+        </div>
+    </div>
+
+    <audio id="spot-intro" src="assets/sounds/spot-intro.mp3" preload="auto" loop></audio>
+    <audio id="sndFxClick" src="assets/sounds/clic.mp3"></audio>
+    
+    <div id="video-lightbox-overlay" class="overlay-modal" style="display:none;" onclick="closeVideoLightbox()">
+        <button class="btn-close-circular" onclick="closeVideoLightbox()">×</button>
+        <div class="zoom-premium-content" onclick="event.stopPropagation()">
+            <div class="zoom-image-wrapper" style="width: 90%; max-width: 600px;">
+                <iframe id="video-lightbox-frame" style="width: 100%; aspect-ratio: 16/9; border: 3px solid var(--brand-accent); border-radius: 10px;" src="" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

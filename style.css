@@ -1,0 +1,301 @@
+:root {
+    --brand-accent: #0066b2; /* Azul BMW Oficial Corporativo */
+    --brand-secondary: #009cde; /* Celeste M de Altas Prestaciones */
+    --bg-premium: #0c0f14; /* Gris Oxford muy Oscuro/Negro Deportivo */
+    --gold-gradient: linear-gradient(135deg, #1c1c1c 0%, #0066b2 50%, #009cde 100%); /* Gradiente Corporativo BMW M */
+    --bg-card-dark: #161a22; /* Tarjetas esmeriladas */
+    --mar-claro: #009cde;
+    --cielo-profundo: #0c0f14;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { background-color: var(--bg-premium); font-family: 'Montserrat', sans-serif; color: #fff; overflow: hidden; width: 100vw; height: 100vh; user-select: none; }
+
+.audio-toggle { position: fixed; top: 10px; left: 10px; z-index: 7500; background: rgba(0,0,0,0.8); border: 1px solid var(--brand-accent); color: var(--brand-secondary); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+.main-hub { height: 100vh; padding: 5px 10px; display: flex; flex-direction: column; align-items: center; overflow: hidden; justify-content: flex-start; gap: 4px; }
+
+.magazine-header { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 2px 5px 2px 45px; border-bottom: 1px solid rgba(0,102,178,0.4); margin-bottom: 4px; }
+.header-title-container { display: flex; flex-direction: column; gap: 1px; }
+.agency-name { font-family: 'Bebas Neue'; font-size: 0.95rem; color: #fff; letter-spacing: 1.5px; }
+.agency-logo { width: 22px; }
+
+.download-track-container { display: flex; flex-direction: column; gap: 1px; margin-top: 1px; }
+.download-text { font-size: 0.48rem; color: #ffffff; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.btn-download-audio { display: inline-flex; align-items: center; justify-content: center; gap: 4px; background: transparent; border: 1px solid var(--brand-secondary); color: var(--brand-secondary); padding: 2px 6px; border-radius: 5px; font-size: 0.5rem; font-weight: 800; text-decoration: none; width: fit-content; transition: background 0.2s ease; }
+.btn-download-audio:active { background: rgba(0, 156, 222, 0.2); }
+
+.mosaic-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 6px; width: 100%; max-width: 380px; }
+.hero-block { grid-column: 1 / -1; height: 105px; position: relative; border-radius: 12px; overflow: hidden; cursor: pointer; border: 2px solid var(--brand-accent); } 
+.hero-block img { width: 100%; height: 100%; object-fit: cover; }
+.hero-overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, #000); padding: 6px; }
+.edition-label { font-size: 0.52rem; color: var(--brand-secondary); font-weight: 900; }
+.hero-title { font-family: 'Montserrat', sans-serif !important; font-weight: 800 !important; font-size: 1.35rem; line-height: 1.2; font-style: normal; }
+
+.menu-block { grid-column: 1 / -1; }
+.magazine-menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.mag-btn { background: var(--bg-card-dark); border: 1px solid rgba(0, 102, 178, 0.4); color: #fff; padding: 6px; border-radius: 8px; text-align: left; font-family: 'Bebas Neue'; font-size: 0.72rem; display: flex; align-items: center; gap: 6px; cursor: pointer; backdrop-filter: blur(10px); }
+.mag-btn .num { color: var(--brand-secondary); font-style: italic; font-size: 0.65rem; }
+
+.video-block { grid-column: 1 / -1; background: var(--bg-card-dark); border-radius: 10px; padding: 4px; display: flex; flex-direction: column; gap: 4px; border: 1px solid var(--brand-accent); cursor: pointer; backdrop-filter: blur(10px); }
+.video-preview { position: relative; flex: 1; border-radius: 6px; overflow: hidden; height: 100%; }
+.video-preview img, .video-preview iframe { width: 100%; height: 100%; object-fit: cover; border: none; }
+.yt-play-mini { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); color: var(--brand-secondary); font-size: 1.3rem; }
+.block-label { font-family: 'Bebas Neue'; font-size: 0.6rem; text-align: center; color: var(--brand-secondary); }
+
+.lead-block { grid-column: 1 / -1; }
+.btn-shiny-gold { width: 100%; height: 38px; border-radius: 10px; border: none; background: var(--gold-gradient); color: #fff; font-weight: 900; font-size: 0.72rem; position: relative; overflow: hidden; cursor: pointer; box-shadow: 0 0 15px rgba(0, 102, 178, 0.4); }
+
+.share-block { grid-column: 1 / -1; }
+.btn-magazine-share { width: 100%; height: 32px; background: transparent; border: 1px solid var(--brand-accent); color: #fff; border-radius: 10px; font-weight: 800; font-size: 0.58rem; cursor: pointer; }
+
+.custom-actions-block { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 5px; width: 100%; max-width: 380px; }
+
+.btn-custom-action { width: 100%; height: 44px; background: #000; border-radius: 10px; font-weight: 900; font-size: 0.74rem; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; letter-spacing: 0.5px; }
+.btn-recommended-businesses { border: 2px solid var(--brand-accent); color: #fff; box-shadow: inset 0 0 12px rgba(0, 102, 178, 0.3), 0 0 8px rgba(0, 102, 178, 0.15); }
+
+.credits-altpro-compact { margin-top: 4px; padding: 0; display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: center !important; gap: 8px; width: 100%; }
+.produced-by { font-size: 0.58rem; font-weight: 900; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px; }
+.altpro-link { background: #000; border: 1px solid #25D366; color: #25D366; padding: 4px 10px; border-radius: 20px; font-weight: 900; text-decoration: none; display: inline-flex !important; align-items: center; gap: 4px; font-size: 0.6rem; }
+
+.contact-panel-robust { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 320px; gap: 8px; margin: 0 auto; }
+.address-tag { font-size: 0.65rem; text-align: center; color: rgba(255,255,255,0.8); line-height: 1.3; font-weight: 600; width: 100%; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 4px; }
+
+.qr-reubicado-container { width: 100%; background: var(--bg-card-dark); border: 1px dashed var(--brand-accent); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 8px; }
+.qr-section-heading { font-family: 'Bebas Neue'; font-size: 0.95rem; color: var(--brand-secondary); letter-spacing: 1px; text-transform: uppercase; }
+.qr-embedded-img { width: 100px; height: 100px; display: block; border-radius: 6px; background: #fff; padding: 4px; object-fit: contain; }
+.btn-download-qr-integrated { width: 100%; height: 32px; text-decoration: none; background: var(--gold-gradient); color: #ffffff; border: none; border-radius: 6px; font-size: 0.6rem; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; gap: 4px; text-transform: uppercase; letter-spacing: 0.5px; transition: opacity 0.2s; }
+
+.content-overlay { position: fixed; inset: 0; background: rgba(12, 15, 20, 0.98); z-index: 5000; padding: 60px 10px 10px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
+
+.carousel-zigzag-grid { display: flex; overflow-x: auto; gap: 15px; padding: 20px; scroll-snap-type: x mandatory; width: 100%; }
+.carousel-zigzag-grid img { width: 250px; height: 180px; object-fit: cover; border-radius: 15px; scroll-snap-align: center; border: 2px solid var(--brand-accent); cursor: pointer; }
+.overlay-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 9000; display: flex; align-items: center; justify-content: center; }
+.zoom-premium-content { position: relative; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
+.zoom-image-wrapper { position: relative; display: inline-flex; align-items: center; justify-content: center; max-width: 90%; }
+#lightbox-image { max-height: 80vh; border: 3px solid var(--brand-accent); border-radius: 10px; }
+.mini-logo-zoom-overlay { position: absolute; top: 15px; right: 15px; width: 45px; pointer-events: none; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); }
+.btn-nav-lightbox { position: absolute; top: 50%; background: rgba(255,255,255,0.2); border: none; color: white; padding: 15px; border-radius: 50%; cursor: pointer; z-index: 9001; font-size: 1.5rem; }
+.btn-prev { left: 10px; }
+.btn-next { right: 10px; }
+
+.text-zoom-card { background: #fff; color: #000; padding: 25px; border-radius: 15px; border: 5px solid var(--brand-accent); width: 85%; max-width: 400px; position: relative; }
+.card-branding-header { display: flex; align-items: center; margin-bottom: 5px; }
+#text-zoom-title { font-family: 'Bebas Neue'; font-size: 1.5rem; letter-spacing: 1px; color: var(--brand-accent); }
+.gold-divider { border: 1px solid var(--brand-accent); margin: 15px 0; opacity: 0.5; }
+#text-zoom-content { font-size: 0.95rem; line-height: 1.5; text-align: justify; white-space: pre-line; }
+
+.shine-effect::after { content: ''; position: absolute; top: -50%; left: -100%; width: 50%; height: 200%; background: rgba(255,255,255,0.3); transform: rotate(30deg); animation: shine 3s infinite; }
+@keyframes shine { 0% { left: -100%; } 20% { left: 150%; } 100% { left: 150%; } }
+
+.social-vertical-stack { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 300px; margin-top: 5px; }
+.stack-btn { padding: 12px; border-radius: 12px; font-weight: 900; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.8rem; }
+.fb-color { background: #1877F2; color: #fff; }
+.maps-color { background: #fff; color: #000; border: 2px solid var(--brand-accent); }
+.btn-close-circular { position: absolute; top: 15px; right: 15px; background: var(--brand-accent); color: #fff; width: 40px; height: 40px; border-radius: 50%; border: 3px solid #fff; z-index: 10000; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
+
+.network-scroll-box { width: 92%; max-width: 400px; background: var(--bg-card-dark); border: 2px solid var(--brand-accent); border-radius: 20px; padding: 25px 20px; max-height: 80vh; overflow-y: auto; text-align: center; backdrop-filter: blur(15px); }
+.network-modal-title { font-family: 'Bebas Neue'; font-size: 1.6rem; color: #fff; letter-spacing: 1px; margin-bottom: 4px; }
+.network-modal-subtitle { font-size: 0.65rem; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 20px; font-weight: 600; }
+.network-buttons-grid { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; }
+.btn-network-link { width: 100%; height: 46px; background: rgba(0,0,0,0.4); border: 1px solid rgba(0,102,178,0.3); border-radius: 10px; color: #fff; font-size: 0.75rem; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; }
+
+.menu-oculto {
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(12, 15, 20, 0.95); 
+    z-index: 9999; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+}
+
+.menu-contenido {
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px; 
+    width: 90%; 
+    max-width: 320px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.sucursal-accordion-btn {
+    width: 100%;
+    background: var(--bg-card-dark);
+    color: #fff;
+    padding: 8px 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 0.78rem;
+    border: 1px solid var(--brand-accent);
+    border-radius: 6px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Estilos para el contenedor e imagen miniatura de los asesores */
+.wrapper-miniatura-asesor {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--brand-secondary);
+    flex-shrink: 0;
+    box-shadow: 0 0 6px rgba(0, 156, 222, 0.4);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.wrapper-miniatura-asesor:active {
+    transform: scale(0.9);
+}
+.img-miniatura-asesor {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.texto-accordion-asesor {
+    flex-grow: 1;
+    text-transform: uppercase;
+}
+.icono-accordion-flecha {
+    margin-left: auto;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.5);
+}
+
+.sucursal-panel-content {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    background: rgba(0, 102, 178, 0.08);
+    border-left: 2px solid var(--brand-secondary);
+    margin-bottom: 5px;
+    border-radius: 0 0 6px 6px;
+}
+
+.btn-menu {
+    padding: 10px; 
+    text-align: center; 
+    border-radius: 5px; 
+    text-decoration: none; 
+    font-weight: bold; 
+    color: white; 
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    display: block;
+}
+.whatsapp { background-color: #25d366; }
+.maps-btn { background-color: #0066b2; }
+.btn-cerrar { margin-top: 15px; padding: 12px; background: #222; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
+.quad-row-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 10px; 
+    width: 100%;
+}
+
+.polaroid-item {
+    width: 100%;
+    height: 120px; 
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.polaroid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    border-radius: 8px;
+}
+
+.gallery-title-white {
+    width: 100% !important;
+    text-align: center !important;
+    margin-bottom: 10px !important;
+    font-weight: bold;
+}
+
+.btn-details-gold {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 90% !important;
+    height: 42px !important;
+    margin: 15px auto 0 auto !important;
+    background: transparent !important;
+    border: 1px solid var(--brand-secondary) !important;
+    color: var(--brand-secondary) !important;
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+[id^="grid-cat"] {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 380px !important; 
+    margin: 0 auto !important;
+    padding: 10px 0 !important;
+}
+
+/* Clases añadidas para robustecer la visualización de la información extra en Contacto */
+.bloque-adicional-contacto {
+    width: 100%;
+    padding: 10px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(0, 102, 178, 0.2);
+    border-radius: 8px;
+    margin-top: 5px;
+}
+.linea-contacto-directa {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.75rem;
+    color: #fff;
+    text-decoration: none;
+    padding: 6px 0;
+}
+.linea-contacto-directa i {
+    color: var(--brand-secondary);
+    width: 16px;
+    text-align: center;
+}
+.linea-contacto-directa span {
+    font-weight: 600;
+}
+.lbl-contacto-sub {
+    font-size: 0.55rem;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: -2px;
+}
+.marca-elegante-asesor {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.85rem;
+    color: var(--brand-secondary);
+    letter-spacing: 1px;
+    margin-top: 4px;
+    border-top: 1px dashed rgba(255,255,255,0.1);
+    padding-top: 4px;
+    text-align: right;
+}
