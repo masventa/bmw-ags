@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radar de Oportunidades - masventa ASESORES</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #0d0d0d; color: #ffffff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; }
+        .radar-header { text-align: center; border-bottom: 2px solid #f80101; padding-bottom: 15px; margin-bottom: 20px; }
+        .radar-header h1 { margin: 0; font-size: 1.4rem; letter-spacing: 1px; }
+        .radar-header p { margin: 5px 0 0 0; color: #888888; font-size: 0.85rem; }
+        
+        /* Contenedores de Eventos */
+        .seccion-titulo { font-size: 1rem; color: #888888; text-transform: uppercase; margin: 20px 0 10px 0; display: flex; align-items: center; gap: 8px; }
+        .card-evento { background-color: #141414; border: 1px solid #222222; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        .tag-tipo { font-size: 0.7rem; font-weight: bold; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; display: inline-block; margin-bottom: 10px; }
+        .tag-corp { background-color: rgba(0, 123, 255, 0.15); color: #007bff; border: 1px solid #007bff; }
+        .tag-premium { background-color: rgba(255, 193, 7, 0.15); color: #ffc107; border: 1px solid #ffc107; }
+        
+        .evento-info h3 { margin: 0 0 5px 0; font-size: 1.1rem; color: #ffffff; }
+        .evento-info p { margin: 0 0 12px 0; font-size: 0.85rem; color: #aaaaaa; line-height: 1.4; }
+        
+        /* Caja de Estrategia Comercial */
+        .estrategia-box { background-color: #1a1a1a; border-left: 3px solid #f80101; padding: 10px 12px; margin-bottom: 12px; border-radius: 0 6px 6px 0; }
+        .estrategia-box strong { font-size: 0.8rem; color: #f80101; text-transform: uppercase; display: block; margin-bottom: 4px; }
+        .estrategia-box span { font-size: 0.85rem; color: #e0e0e0; }
+        
+        /* Botón Copiar Guión */
+        .btn-copiar { background-color: #222222; border: 1px solid #444444; color: #ffffff; padding: 10px; width: 100%; border-radius: 6px; font-size: 0.85rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s; }
+        .btn-copiar:active { background-color: #f80101; border-color: #f80101; }
+    </style>
+</head>
+<body>
+
+    <div class="radar-header">
+        <h1><i class="fas fa-radar" style="color: #f80101; margin-right: 6px;"></i> RADAR masventa</h1>
+        <p>Habilitación Comercial • BMW Aguascalientes</p>
+    </div>
+
+    <!-- SECCIÓN CORPORATIVA -->
+    <div class="seccion-titulo">
+        <i class="fas fa-building text-blue"></i> Inteligencia Corporativa (Flotillas / Arrendamiento)
+    </div>
+
+    <div class="card-evento">
+        <span class="tag-tipo tag-corp">Apertura Industrial</span>
+        <div class="evento-info">
+            <h3>Nueva Planta Coreaproduc</h3>
+            <p><strong>Ubicación:</strong> PIVA Aguascalientes (Parque Industrial Valle de Aguascalientes). Inversión extranjera directa con arribo de ejecutivos asiáticos.</p>
+            
+            <div class="estrategia-box">
+                <strong>Enfoque de Venta:</strong> Promover esquemas de Arrendamiento Puro (Leasing) 100% deducible para directores corporativos. Modelos sugeridos: Serie 5 y X5.
+            </div>
+            
+            <button class="btn-copiar" onclick="copiarGuion(1)">
+                <i class="far fa-copy"></i> Copiar Guión de WhatsApp sugerido
+            </button>
+        </div>
+    </div>
+
+    <!-- SECCIÓN GAMA ALTA / HIGH-END -->
+    <div class="seccion-titulo">
+        <i class="fas fa-trophy text-gold"></i> Eventos High-End (Perfil Premium)
+    </div>
+
+    <div class="card-evento">
+        <span class="tag-tipo tag-premium">Torneo Exclusivo</span>
+        <div class="evento-info">
+            <h3>Torneo de Golf San Carlos</h3>
+            <p><strong>Fecha:</strong> Próximo 23 de Febrero. Evento de alto poder adquisitivo con asistencia de empresarios de la región bajío.</p>
+            
+            <div class="estrategia-box">
+                <strong>Enfoque de Venta:</strong> Ideal para clientes clasificados en el semáforo como "Luz Roja (Esperar Condiciones)". Se les invita al evento como atención premium para activar interés. Modelos: Serie 7 / XM.
+            </div>
+            
+            <button class="btn-copiar" onclick="copiarGuion(2)">
+                <i class="far fa-copy"></i> Copiar Guión de WhatsApp sugerido
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Lógica de habilitación comercial inmediata
+        function copiarGuion(id) {
+            let texto = "";
+            
+            if (id === 1) {
+                texto = "Hola, un gusto saludarte. Vi que estás evaluando opciones de movilidad ejecutiva. Justo por la apertura de operaciones en el PIVA, en BMW Aguascalientes activamos un programa de Arrendamiento Puro (Leasing) ideal para directivos, que te permite deducir el 100% de las rentas y proteger el flujo de la empresa. ¿Te convendría recibir una corrida financiera preliminar de la Serie 5 para analizar los beneficios fiscales?";
+            } else if (id === 2) {
+                texto = "Hola, espero que estés muy bien. Recordando tu interés por conocer los modelos insignia de BMW, te escribo para hacerte una cordial invitación: el próximo 23 de Febrero seremos patrocinadores del Torneo de Golf en el Club San Carlos y tendremos una zona de exhibición privada de la nueva X7. Me encantaría reservarte un acceso o programar una prueba de manejo exclusiva en el marco del evento. ¿Cómo ves, te gustaría acompañarnos?";
+            }
+            
+            // Copiar al portapapeles de forma nativa en celulares
+            navigator.clipboard.writeText(texto).then(() => {
+                alert("¡Guión copiado al portapapeles! Ya puedes pegarlo directamente en tu chat de WhatsApp con el cliente.");
+            }).catch(err => {
+                console.error("Error al copiar texto: ", err);
+            });
+        }
+    </script>
+</body>
+</html>
