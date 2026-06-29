@@ -3,103 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Gerencial - masventa CONTROL</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Panel Gerencial - Control de Leads BMW</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Estilos específicos y minimalistas para el panel de control */
-        body { background-color: #0d0d0d; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; }
-        .panel-container { max-width: 1100px; margin: 0 auto; display: none; } /* Oculto por defecto hasta validar clave */
-        .panel-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--brand-accent, #f80101); padding-bottom: 15px; margin-bottom: 25px; }
-        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 30px; }
-        .kpi-card { background-color: #141414; border: 1px solid #222222; border-radius: 8px; padding: 20px; text-align: center; }
-        .kpi-card h3 { margin: 0 0 10px 0; font-size: 0.9rem; color: #888888; text-transform: uppercase; }
-        .kpi-value { font-size: 1.8rem; font-weight: bold; color: #ffffff; }
+        body { font-family: 'Arial', sans-serif; background-color: #111; color: #fff; margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1, h2 { color: #fff; text-align: center; }
         
-        /* Tabla del Semáforo de Maduración */
-        .tabla-container { background-color: #141414; border: 1px solid #222222; border-radius: 8px; padding: 20px; overflow-x: auto; }
-        .tabla-container h2 { margin-top: 0; font-size: 1.2rem; color: #ffffff; }
+        /* Pantalla de Login */
+        .login-box { max-width: 400px; margin: 100px auto; background: #222; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); text-align: center; }
+        .login-box input { width: 90%; padding: 10px; margin: 15px 0; border: 1px solid #444; background: #333; color: #fff; border-radius: 4px; text-align: center; font-size: 16px; }
+        .login-box button { background: #f80101; color: white; border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; border-radius: 4px; width: 95%; font-size: 16px; }
+        
+        /* Panel Principal */
+        .kpi-container { display: flex; justify-content: space-between; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; }
+        .kpi-card { flex: 1; min-width: 220px; background: #222; padding: 20px; border-radius: 8px; text-align: center; border-bottom: 4px solid #444; }
+        .kpi-card h3 { margin: 0 0 10px 0; font-size: 14px; text-transform: uppercase; color: #aaa; }
+        .kpi-card p { margin: 0; font-size: 32px; font-weight: bold; }
+        
+        .border-total { border-bottom-color: #00f0ff; }
+        .border-verde { border-bottom-color: #00c851; color: #00c851; }
+        .border-amarillo { border-bottom-color: #ffbb33; color: #ffbb33; }
+        .border-rojo { border-bottom-color: #f80101; color: #f80101; }
+        
+        /* Botones de acción */
+        .action-bar { margin-bottom: 20px; display: flex; gap: 10px; justify-content: flex-end; }
+        .btn { border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; border-radius: 4px; display: flex; align-items: center; gap: 8px; color: white; }
+        .btn-excel { background-color: #00c851; }
+        .btn-trash { background-color: #f80101; }
+        .btn-logout { background-color: #555; }
+        
+        /* Tabla */
+        .table-responsive { overflow-x: auto; background: #222; padding: 15px; border-radius: 8px; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        th { padding: 12px; border-bottom: 2px solid #333333; color: #888888; font-size: 0.85rem; text-transform: uppercase; }
-        td { padding: 12px; border-bottom: 1px solid #222222; font-size: 0.9rem; color: #e0e0e0; }
+        th { background-color: #333; color: #aaa; padding: 12px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        td { padding: 14px 12px; border-bottom: 1px solid #333; font-size: 14px; vertical-align: middle; }
         
-        /* Badges del Semáforo Estratégico */
-        .badge-semaforo { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; display: inline-block; text-transform: uppercase; }
-        .badge-verde { background-color: rgba(0, 200, 81, 0.15); color: #00c851; border: 1px solid #00c851; }
-        .badge-amarillo { background-color: rgba(255, 187, 51, 0.15); color: #ffbb33; border: 1px solid #ffbb33; }
-        .badge-rojo { background-color: rgba(248, 1, 1, 0.15); color: #f80101; border: 1px solid #f80101; }
-        
-        /* Pantalla de bloqueo */
-        #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80vh; }
-        .login-card { background-color: #141414; border: 1px solid var(--brand-accent, #f80101); border-radius: 12px; padding: 30px; text-align: center; width: 90%; max-width: 350px; }
-        .login-card input { background-color: #1a1a1a; border: 1px solid #333333; border-radius: 6px; color: #white; padding: 12px; width: 100%; box-sizing: border-box; margin-bottom: 15px; font-size: 1rem; text-align: center; }
-        .login-card button { background-color: var(--brand-accent, #f80101); border: none; color: white; padding: 12px; width: 100%; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        /* Badges del Semáforo */
+        .badge-semaforo { padding: 6px 12px; border-radius: 20px; font-weight: bold; font-size: 12px; display: inline-block; text-align: center; }
+        .badge-verde { background-color: rgba(0, 200, 81, 0.2); color: #00c851; border: 1px solid #00c851; }
+        .badge-amarillo { background-color: rgba(255, 187, 51, 0.2); color: #ffbb33; border: 1px solid #ffbb33; }
+        .badge-rojo { background-color: rgba(248, 1, 1, 0.2); color: #f80101; border: 1px solid #f80101; }
     </style>
 </head>
 <body>
 
-    <!-- PANTALLA DE ACCESO CONTROLADO -->
-    <div id="login-screen">
-        <div class="login-card">
-            <i class="fas fa-lock" style="font-size: 2rem; color: var(--brand-accent, #f80101); margin-bottom: 15px;"></i>
-            <h3 style="margin: 0 0 20px 0;">masventa Dirección</h3>
-            <input type="password" id="pass-input" placeholder="Introduce la clave gerencial">
+    <div class="container">
+        <!-- PANTALLA DE ACCESO -->
+        <div id="login-screen" class="login-box">
+            <i class="fas fa-lock" style="font-size: 40px; color: #f80101; margin-bottom: 10px;"></i>
+            <h2>Dirección Comercial</h2>
+            <p style="color: #aaa; font-size: 14px;">Ingrese la clave gerencial de auditoría</p>
+            <input type="password" id="pass-input" placeholder="Clave de acceso...">
             <button onclick="verificarAccesoGerente()">Ingresar al Panel</button>
         </div>
+
+        <!-- PANEL GERENCIAL PRINCIPAL -->
+        <div id="panel-gerente" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h1 style="margin: 0; font-size: 24px;">BMW Aguascalientes - Control de Auditoría</h1>
+                <button onclick="cerrarSesionGerente()" class="btn btn-logout"><i class="fas fa-sign-out-alt"></i> Salir</button>
+            </div>
+
+            <!-- TARJETAS METRICAS KPI -->
+            <div class="kpi-container">
+                <div class="kpi-card border-total">
+                    <h3>Total Prospectos</h3>
+                    <p id="kpi-total">0</p>
+                </div>
+                <div class="kpi-card border-verde">
+                    <h3>Avanzar Ya (Verde)</h3>
+                    <p id="kpi-verde">0</p>
+                </div>
+                <div class="kpi-card border-amarillo">
+                    <h3>En Seguimiento (Amarillo)</h3>
+                    <p id="kpi-amarillo">0</p>
+                </div>
+                <div class="kpi-card border-rojo">
+                    <h3>Esperar Condiciones (Rojo)</h3>
+                    <p id="kpi-rojo">0</p>
+                </div>
+            </div>
+
+            <h2 style="text-align: left; font-size: 18px; margin-bottom: 15px;">Estatus de Maduración del Cliente</h2>
+
+            <!-- BARRA DE ACCIONES CON BOTONES NUEVOS -->
+            <div class="action-bar">
+                <button onclick="exportarAExcel()" class="btn btn-excel">
+                    <i class="fas fa-file-excel"></i> Descargar Excel (CSV)
+                </button>
+                <button onclick="limpiarPanelGerencial()" class="btn btn-trash">
+                    <i class="fas fa-trash-alt"></i> Limpiar Panel
+                </button>
+            </div>
+
+            <!-- TABLA DE CONTROL DE LEADS -->
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SEMÁFORO</th>
+                            <th>FECHA</th>
+                            <th>PROSPECTO</th>
+                            <th>WHATSAPP</th>
+                            <th>MODELO INTERÉS</th>
+                            <th>USO DESTINADO</th>
+                            <th>ASESOR ASIGNADO</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-prospectos-body">
+                        <!-- Los registros de tu CARD se acomodarán aquí de forma automática -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
-    <!-- CONTENEDOR PRINCIPAL DEL PANEL (PROTEGIDO) -->
-    <div class="panel-container" id="panel-gerente">
-        <div class="panel-header">
-            <div>
-                <h1 style="margin: 0; font-size: 1.6rem;">Panel de Auditoría & Control</h1>
-                <p style="margin: 5px 0 0 0; color: #888888; font-size: 0.9rem;">BMW Aguascalientes • Monitoreo de Cartera Blindada</p>
-            </div>
-            <button onclick="cerrarSesionGerente()" style="background: transparent; border: 1px solid #444444; color: #888888; padding: 8px 15px; border-radius: 6px; cursor: pointer;">Cerrar Sesión</button>
-        </div>
-
-        <!-- TARJETAS METRICAS (KPIs) -->
-        <div class="kpi-grid">
-            <div class="kpi-card">
-                <h3>Total Leads Blindados</h3>
-                <div class="kpi-value" id="kpi-total">0</div>
-            </div>
-            <div class="kpi-card">
-                <h3>Luz Verde (Avanzar Ya)</h3>
-                <div class="kpi-value" id="kpi-verde" style="color: #00c851;">0</div>
-            </div>
-            <div class="kpi-card">
-                <h3>Luz Amarilla (Seguimiento)</h3>
-                <div class="kpi-value" id="kpi-amarillo" style="color: #ffbb33;">0</div>
-            </div>
-            <div class="kpi-card">
-                <h3>Luz Roja (Esperar Cond.)</h3>
-                <div class="kpi-value" id="kpi-rojo" style="color: #f80101;">0</div>
-            </div>
-        </div>
-
-        <!-- TABLA DE PROSPECTOS CON AUDITORÍA DE SEMÁFORO -->
-        <div class="tabla-container">
-            <h2>Estatus de Maduración del Cliente</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Semáforo</th>
-                        <th>Fecha</th>
-                        <th>Prospecto</th>
-                        <th>WhatsApp</th>
-                        <th>Modelo Interés</th>
-                        <th>Uso Destinado</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-prospectos-body">
-                    <!-- Los renglones se inyectan dinámicamente con JS -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Conexión al script de control que crearemos a continuación -->
+    <!-- Enlace al cerebro que controla la lógica -->
     <script src="gerente-core.js"></script>
 </body>
 </html>
