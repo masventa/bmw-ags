@@ -70,14 +70,15 @@ body { background-color: var(--bg-premium); font-family: 'Montserrat', sans-seri
 
 .carousel-zigzag-grid { display: flex; overflow-x: auto; gap: 15px; padding: 20px; scroll-snap-type: x mandatory; width: 100%; }
 .carousel-zigzag-grid img { width: 250px; height: 180px; object-fit: cover; border-radius: 15px; scroll-snap-align: center; border: 2px solid var(--brand-accent); cursor: pointer; }
-.overlay-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 9000; display: flex; align-items: center; justify-content: center; }
+.overlay-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 10001; display: flex; align-items: center; justify-content: center; }
 .zoom-premium-content { position: relative; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
 .zoom-image-wrapper { position: relative; display: inline-flex; align-items: center; justify-content: center; max-width: 90%; }
 #lightbox-image { max-height: 80vh; border: 3px solid var(--brand-accent); border-radius: 10px; }
 .mini-logo-zoom-overlay { position: absolute; top: 15px; right: 15px; width: 45px; pointer-events: none; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); }
-.btn-nav-lightbox { position: absolute; top: 50%; background: rgba(255,255,255,0.2); border: none; color: white; padding: 15px; border-radius: 50%; cursor: pointer; z-index: 9001; font-size: 1.5rem; }
+.btn-nav-lightbox { position: absolute; top: 50%; background: rgba(255,255,255,0.2); border: none; color: white; padding: 15px; border-radius: 50%; cursor: pointer; z-index: 10002; font-size: 1.5rem; display: none; }
 .btn-prev { left: 10px; }
 .btn-next { right: 10px; }
+.btn-close-circular { position: absolute; top: 15px; right: 15px; background: var(--brand-accent); color: #fff; width: 40px; height: 40px; border-radius: 50%; border: 3px solid #fff; z-index: 10003; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; cursor: pointer; }
 
 .text-zoom-card { background: #fff; color: #000; padding: 25px; border-radius: 15px; border: 5px solid var(--brand-accent); width: 85%; max-width: 400px; position: relative; }
 .card-branding-header { display: flex; align-items: center; margin-bottom: 5px; }

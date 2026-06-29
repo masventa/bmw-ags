@@ -176,7 +176,10 @@ function openTextZoom(cat) {
     document.getElementById('text-zoom-modal').style.display = 'flex';
 }
 
-function closeLightbox() { document.getElementById('lightbox').style.display = 'none'; }
+function closeLightbox() { 
+    playClick(); 
+    document.getElementById('lightbox').style.display = 'none'; 
+}
 function closeAppContent() { document.getElementById('dynamic-content-layer').style.display = 'none'; }
 function closeTextZoom() { document.getElementById('text-zoom-modal').style.display = 'none'; }
 function openBrandModal(modalId) { playClick(); const modal = document.getElementById(modalId); if (modal) modal.style.display = 'flex'; }
