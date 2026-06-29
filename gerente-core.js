@@ -4,8 +4,6 @@
  */
 
 const CLAVE_GERENCIAL_ACCESO = "BMW2026"; 
-
-// Lista de asesores de la agencia para asignación automática de prueba
 const ASESORES_BMW = ["Asesor Juan Pérez", "Asesora María Gómez", "Asesor Carlos Ruiz", "Asesora Ana Martínez"];
 
 function verificarAccesoGerente() {
@@ -22,10 +20,11 @@ function verificarAccesoGerente() {
 function cerrarSesionGerente() {
     document.getElementById('pass-input').value = '';
     document.getElementById('panel-gerente').style.display = 'none';
-    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('login-screen').style.display = 'block';
 }
 
 function cargarYProcesarAuditoria() {
+    // Sincronizado exacto con tu script.js
     const registros = JSON.parse(localStorage.getItem('AUDITORIA_GERENCIAL_CARD')) || [];
     const tbody = document.getElementById('tabla-prospectos-body');
     tbody.innerHTML = ''; 
@@ -34,34 +33,37 @@ function cargarYProcesarAuditoria() {
     let verdes = 0; let amarillos = 0; let rojos = 0;
     
     if (total === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#555;">No hay registros de prospectos todavía.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#555; padding: 20px;">No hay registros de prospectos todavía. Envía un formulario desde la CARD para ver los resultados.</td></tr>`;
         actualizarIndicadoresKPI(0, 0, 0, 0);
         return;
     }
     
     registros.forEach((prospecto, index) => {
-        if (!prospecto.nombre && !prospecto.whatsapp) return; 
-
+        // Evaluamos las respuestas reales del objeto DATA_PROSPECTO
         let score = 0;
-        if (prospecto.tiempo === "Esta semana") score += 50;
-        else if (prospecto.tiempo === "Este mes") score += 30;
-        else if (prospecto.tiempo === "De 3 a 6 meses") score += 10;
         
-        if (prospecto.metodo && prospecto.metodo !== "Aún no lo sé") score += 25;
-        if (prospecto.uso && prospecto.uso !== "Solo estoy investigando") score += 25;
+        // Mapeo adaptivo de respuestas
+        const tiempoCompra = prospecto.tiempo || prospecto.tiempo_compra || "";
+        const metodoPago = prospecto.metodo || prospecto.metodo_pago || "";
+        const usoDestinado = prospecto.uso || prospecto.uso_destinado || "";
+
+        if (tiempoCompra.includes("semana") || tiempoCompra.includes("Inmediato")) score += 50;
+        else if (tiempoCompra.includes("mes")) score += 30;
+        else if (tiempoCompra.includes("meses")) score += 10;
+        
+        if (metodoPago && !metodoPago.includes("sé") && !metodoPago.includes("investigando")) score += 25;
+        if (usoDestinado && !usoDestinado.includes("investigando")) score += 25;
         
         let claseBadge = ""; let textoSemaforo = "";
         if (score >= 75) { claseBadge = "badge-verde"; textoSemaforo = "Luz Verde (Avanzar Ya)"; verdes++; }
         else if (score >= 40 && score < 75) { claseBadge = "badge-amarillo"; textoSemaforo = "Luz Amarilla (Acompañar)"; amarillos++; }
         else { claseBadge = "badge-rojo"; textoSemaforo = "Luz Roja (Esperar Cond.)"; rojos++; }
         
-        let fecha = prospecto.fecha_registro || "N/A";
+        let fecha = prospecto.fecha_registro || new Date().toLocaleDateString();
         let nombre = prospecto.nombre || "No registrado";
-        let whatsapp = prospecto.whatsapp || "No registrado";
-        let modelo = prospecto.modelo || "No definido";
-        let uso = prospecto.uso || "No definido";
+        let whatsapp = prospecto.whatsapp || prospecto.telefono || "No registrado";
+        let modelo = prospecto.modelo || prospecto.modelo_interes || "No definido";
         
-        // Asignar un asesor de la lista de forma rotativa automática para la demo
         let asesor = ASESORES_BMW[index % ASESORES_BMW.length];
         
         const fila = document.createElement('tr');
@@ -75,13 +77,13 @@ function cargarYProcesarAuditoria() {
                 </a>
             </td>
             <td><span style="color:#f80101; font-weight:bold;">${modelo}</span></td>
-            <td>${uso}</td>
+            <td>${usoDestinado || "No especificado"}</td>
             <td style="color:#00f0ff; font-weight:bold;">${asesor}</td>
         `;
         tbody.appendChild(fila);
     });
     
-    actualizarIndicadoresKPI(verdes + amarillos + rojos, verdes, amarillos, rojos);
+    actualizarIndicadoresKPI(total, verdes, amarillos, rojos);
 }
 
 function actualizarIndicadoresKPI(t, v, a, r) {
@@ -96,12 +98,11 @@ function exportarAExcel() {
     if (registros.length === 0) { alert("No hay datos para exportar."); return; }
     
     let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; 
-    csvContent += "Fecha,Prospecto,WhatsApp,Modelo Interes,Uso Destinado,Tiempo Compra,Metodo Pago,Asesor Asignado\n";
+    csvContent += "Fecha,Prospecto,WhatsApp,Modelo Interes,Uso Destinado,Asesor Asignado\n";
     
     registros.forEach((p, index) => {
-        if (!p.nombre && !p.whatsapp) return;
         let asesor = ASESORES_BMW[index % ASESORES_BMW.length];
-        let fila = `"${p.fecha_registro || ''}","${p.nombre || ''}","${p.whatsapp || ''}","${p.modelo || ''}","${p.uso || ''}","${p.tiempo || ''}","${p.metodo || ''}","${asesor}"\n`;
+        let fila = `"${p.fecha_registro || ''}","${p.nombre || ''}","${p.whatsapp || p.telefono || ''}","${p.modelo || p.modelo_interes || ''}","${p.uso || p.uso_destinado || ''}","${asesor}"\n`;
         csvContent += fila;
     });
     
@@ -115,7 +116,7 @@ function exportarAExcel() {
 }
 
 function limpiarPanelGerencial() {
-    if (confirm("¿Estás seguro de vaciar el panel?")) {
+    if (confirm("¿Estás seguro de vaciar el panel de auditoría por completo?")) {
         localStorage.removeItem('AUDITORIA_GERENCIAL_CARD');
         alert("Panel vaciado.");
         location.reload();
