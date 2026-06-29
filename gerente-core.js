@@ -4,11 +4,8 @@
  */
 
 // CONFIGURACIÓN DE SEGURIDAD INTERNA
-const CLAVE_GERENCIAL_ACCESO = "BMW2026"; // Esta es la contraseña que usará el gerente
+const CLAVE_GERENCIAL_ACCESO = "BMW2026"; 
 
-/**
- * Control de Acceso de Alta Dirección
- */
 function verificarAccesoGerente() {
     const inputClave = document.getElementById('pass-input').value;
     
@@ -27,45 +24,43 @@ function cerrarSesionGerente() {
     document.getElementById('login-screen').style.display = 'flex';
 }
 
-/**
- * Motor Analítico: Procesa los Leads y calcula el Semáforo de Maduración Estratégico
- */
 function cargarYProcesarAuditoria() {
-    // Extraer la cartera blindada desde el LocalStorage
     const registros = JSON.parse(localStorage.getItem('AUDITORIA_GERENCIAL_CARD')) || [];
     
     const tbody = document.getElementById('tabla-prospectos-body');
-    tbody.innerHTML = ''; // Limpiar tabla antes de renderizar
+    tbody.innerHTML = ''; 
     
-    // Contadores para los KPIs del gerente
     let total = registros.length;
+    let whites = 0; // Para registros de prueba vacíos
     let verdes = 0;
     let amarillos = 0;
     let rojos = 0;
     
-    // Si no hay datos aún, mostrar renglón informativo
     if (total === 0) {
         tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#555;">No hay registros de prospectos en el cuestionario todavía.</td></tr>`;
         actualizarIndicadoresKPI(total, verdes, amarillos, rojos);
         return;
     }
     
-    // Procesar cada prospecto de la base de datos
     registros.forEach(prospecto => {
+        // Si el registro no tiene nombre ni whatsapp, es una prueba vacía vieja
+        if (!prospecto.nombre && !prospecto.whatsapp) {
+            return; 
+        }
+
         let score = 0;
         
-        // 1. Puntos por TIEMPO DE COMPRA (Disparador principal)
-        if (prospecto.tiempo_compra === "Esta semana") score += 50;
-        else if (prospecto.tiempo_compra === "Este mes") score += 30;
-        else if (prospecto.tiempo_compra === "De 3 a 6 meses") score += 10;
+        // 1. Puntos por TIEMPO DE COMPRA
+        if (prospecto.tiempo === "Esta semana") score += 50;
+        else if (prospecto.tiempo === "Este mes") score += 30;
+        else if (prospecto.tiempo === "De 3 a 6 meses") score += 10;
         
-        // 2. Puntos por MÉTODO DE PAGO (Condición financiera)
-        if (prospecto.metodo_pago && prospecto.metodo_pago !== "Aún no lo sé") score += 25;
+        // 2. Puntos por MÉTODO DE PAGO
+        if (prospecto.metodo && prospecto.metodo !== "Aún no lo sé") score += 25;
         
-        // 3. Puntos por MODELO / PERFIL (Claridad de intención)
-        if (prospecto.perfil_compra && prospecto.perfil_compra !== "Solo estoy investigando") score += 25;
+        // 3. Puntos por USO / PERFIL
+        if (prospecto.uso && prospecto.uso !== "Solo estoy investigando") score += 25;
         
-        // ALGORITMO DEL SEMÁFORO ESTRATÉGICO (Tu Modelo de Maduración)
         let claseBadge = "";
         let textoSemaforo = "";
         
@@ -83,14 +78,12 @@ function cargarYProcesarAuditoria() {
             rojos++;
         }
         
-        // Formatear los datos para proteger el render
         let fecha = prospecto.fecha_registro || "N/A";
         let nombre = prospecto.nombre || "No registrado";
         let whatsapp = prospecto.whatsapp || "No registrado";
-        let modelo = prospecto.modelo_interes || "No definido";
-        let uso = prospecto.perfil_compra || "No definido";
+        let modelo = prospecto.modelo || "No definido";
+        let uso = prospecto.uso || "No definido";
         
-        // Inyectar la fila con el diseño limpio y el color del semáforo correspondiente
         const fila = document.createElement('tr');
         fila.innerHTML = `
             <td><span class="badge-semaforo ${claseBadge}">${textoSemaforo}</span></td>
@@ -107,8 +100,7 @@ function cargarYProcesarAuditoria() {
         tbody.appendChild(fila);
     });
     
-    // Actualizar los números de las tarjetas superiores
-    actualizarIndicadoresKPI(total, verdes, amarillos, rojos);
+    actualizarIndicadoresKPI(verdes + amarillos + rojos, verdes, amarillos, rojos);
 }
 
 function actualizarIndicadoresKPI(t, v, a, r) {
