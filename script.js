@@ -114,7 +114,7 @@ function renderGallery(cat) {
     titleHeader.innerText = CONFIG.textos[cat].t;
     grid.appendChild(titleHeader);
     
-    const imgCount = (cat === 'cat3') ? 3 : (cat === 'cat1' || cat === 'cat2') ? 6 : 4;
+    const imgCount = (cat === 'cat3') ? 4 : (cat === 'cat1' || cat === 'cat2') ? 6 : 4;
     const imgs = [];
     for(let i = 1; i <= imgCount; i++) { imgs.push(`assets/gallery/${cat}/${i}.jpg`); }
     
@@ -153,11 +153,23 @@ function createPol(src, pos, arr) {
 
 function openLightbox(src, arr, hideControls) {
     playClick();
-    currentGallery = arr;
-    currentIndex = arr.indexOf(src);
+    
+    // MEJORA: Si arr no existe o viene vacío, creamos un array con la imagen actual para evitar errores
+    currentGallery = (arr && arr.length > 0) ? arr : [src];
+    currentIndex = currentGallery.indexOf(src);
+    if (currentIndex === -1) currentIndex = 0;
+    
     const lightboxEl = document.getElementById('lightbox');
     const imgEl = document.getElementById('lightbox-image');
-    if(hideControls) { lightboxEl.classList.add('hide-nav-arrows'); } else { lightboxEl.classList.remove('hide-nav-arrows'); }
+    
+    // Si hideControls es true (como con los asesores) OR si la galería real solo tiene 1 imagen, esconde las flechas.
+    // Si viene de QUIENES SOMOS, EXCELENCIA o CLIENTES FELICES con su grupo de fotos, quita el bloqueo y activa las flechas.
+    if (hideControls || currentGallery.length <= 1) { 
+        lightboxEl.classList.add('hide-nav-arrows'); 
+    } else { 
+        lightboxEl.classList.remove('hide-nav-arrows'); 
+    }
+    
     imgEl.src = src;
     lightboxEl.style.display = 'flex';
 }
@@ -188,10 +200,7 @@ function playClickSound() { playClick(); }
 
 function toggleAudioGlobal() {
     isMuted = !isMuted;
-    const spot = document.getElementById('spot-intro');
-    const icon = document.getElementById('audio-icon');
-    spot.muted = isMuted;
-    icon.className = isMuted ? "fas fa-volume-mute" : "fas fa-volume-up";
+    // Eliminamos por completo las líneas que buscaban 'spot-intro' y 'audio-icon'
 }
 
 function playClick() { const snd = document.getElementById('sndFxClick'); if(snd && !isMuted) { snd.currentTime = 0; snd.play().catch(()=>{}); } }
@@ -285,4 +294,205 @@ document.addEventListener('DOMContentLoaded', () => {
 async function shareExperienceRobust() {
     try { await navigator.share({ title: 'BMW Euromotors de Aguascalientes', url: window.location.href }); }
     catch { playClick(); navigator.clipboard.writeText(window.location.href).then(() => { alert("¡Enlace de tarjeta copiado!"); }); }
+}
+/* ==========================================================================
+   MÓDULO DE CUESTIONARIO INTELIGENTE (POTENCIA EXTERNA + CONTROL INTERNO)
+   ========================================================================== */
+
+// Objeto global en memoria para capturar las respuestas del prospecto actual
+let DATA_PROSPECTO = {
+    nombre: '',
+    whatsapp: '',
+    correo: '',
+    contacto: '',
+    modelo: '',
+    tipo: '',
+    uso: '',
+    tiempo: '',
+    metodo: '',
+    presupuesto: '',
+    promocion: '',
+    origen: '',
+    fecha_registro: ''
+};
+
+let pasoActualCuestionario = 1;
+const TOTAL_PASOS_CUESTIONARIO = 9;
+
+/**
+ * Abre el asistente interactivo del cuestionario
+ */
+function abrirCuestionario() {
+    // Inicializar el objeto de datos limpio
+    DATA_PROSPECTO = {
+        nombre: '', whatsapp: '', correo: '', contacto: '',
+        modelo: '', tipo: '', uso: '', tiempo: '',
+        metodo: '', presupuesto: '', promocion: '', origen: '',
+        fecha_registro: ''
+    };
+    
+    pasoActualCuestionario = 1;
+    
+    // Limpiar inputs visuales anteriores
+    document.getElementById('q-nombre').value = '';
+    document.getElementById('q-whatsapp').value = '';
+    document.getElementById('q-correo').value = '';
+    
+    // Limpiar botones que hayan quedado activos de sesiones previas
+    document.querySelectorAll('.btn-opcion-q').forEach(btn => {
+        btn.classList.remove('active-q');
+    });
+    
+    // Resetear visibilidad de pasos
+    for (let i = 1; i <= TOTAL_PASOS_CUESTIONARIO; i++) {
+        const pEl = document.getElementById(`paso-${i}`);
+        if (pEl) pEl.style.display = (i === 1) ? 'block' : 'none';
+    }
+    
+    // Configurar interfaz del footer inicial
+    document.getElementById('btn-q-prev').style.visibility = 'hidden';
+    const nextBtn = document.getElementById('btn-q-next');
+    nextBtn.innerText = 'Siguiente';
+    nextBtn.onclick = validarPaso1YComenzar;
+    
+    // Actualizar barra de progreso al 10% inicial
+    document.getElementById('cuestionario-progress').style.width = '10%';
+    
+    // Mostrar el modal en pantalla
+    document.getElementById('cuestionario-modal').style.display = 'flex';
+    if (typeof playClick === 'function') playClick();
+}
+
+/**
+ * Valida los datos obligatorios del Paso 1 antes de permitir avanzar
+ */
+function validarPaso1YComenzar() {
+    const nom = document.getElementById('q-nombre').value.trim();
+    const tel = document.getElementById('q-whatsapp').value.trim();
+    const corr = document.getElementById('q-correo').value.trim();
+    
+    if (!nom || !tel) {
+        alert("Por favor, introduce tu Nombre completo y WhatsApp para poder asignarte un especialista.");
+        return;
+    }
+    
+    // Guardar los primeros datos obligatorios
+    DATA_PROSPECTO.nombre = nom;
+    DATA_PROSPECTO.whatsapp = tel;
+    DATA_PROSPECTO.correo = corr ? corr : 'No proporcionado';
+    
+    // Si no seleccionó preferencia de contacto explícita, por defecto dejamos WhatsApp
+    if (!DATA_PROSPECTO.contacto) {
+        DATA_PROSPECTO.contacto = 'WhatsApp';
+    }
+    
+    // Cambiar el evento del botón Siguiente para los pasos automáticos posteriores
+    const nextBtn = document.getElementById('btn-q-next');
+    nextBtn.onclick = () => cambiarPasoCuestionario(1);
+    
+    // Avanzar al paso 2
+    cambiarPasoCuestionario(1);
+}
+
+/**
+ * Maneja el guardado de datos al hacer clic en las opciones (Pasos 2 al 9)
+ */
+function guardarDatoPaso(pasoNum, campoKey, valorSeleccionado) {
+    if (typeof playClick === 'function') playClick();
+    
+    // Guardar el valor en nuestro objeto de auditoría
+    DATA_PROSPECTO[campoKey] = valorSeleccionado;
+    
+    // Marcar visualmente el botón seleccionado en este paso específico
+    const contenedorPaso = document.getElementById(`paso-${pasoNum}`);
+    if (contenedorPaso) {
+        contenedorPaso.querySelectorAll('.btn-opcion-q').forEach(btn => {
+            if (btn.innerText.trim().toLowerCase() === valorSeleccionado.toLowerCase() || 
+                btn.getAttribute('onclick').includes(`'${valorSeleccionado}'`)) {
+                btn.classList.add('active-q');
+            } else {
+                btn.classList.remove('active-q');
+            }
+        });
+    }
+    
+    // Avance automático inteligente transcurridos 250 milisegundos para dar feedback visual
+    setTimeout(() => {
+        if (pasoActualCuestionario < TOTAL_PASOS_CUESTIONARIO) {
+            cambiarPasoCuestionario(1);
+        } else {
+            finalizarCuestionarioYMostrarAsesores();
+        }
+    }, 250);
+}
+
+/**
+ * Controla la navegación general (Adelante / Atrás) y actualiza la barra de progreso
+ */
+function cambiarPasoCuestionario(direccion) {
+    if (typeof playClick === 'function') playClick();
+    
+    // Ocultar paso actual
+    const pasoActualEl = document.getElementById(`paso-${pasoActualCuestionario}`);
+    if (pasoActualEl) pasoActualEl.style.display = 'none';
+    
+    // Calcular nuevo paso
+    pasoActualCuestionario += direccion;
+    
+    // Mostrar nuevo paso
+    const nuevoPasoEl = document.getElementById(`paso-${pasoActualCuestionario}`);
+    if (nuevoPasoEl) nuevoPasoEl.style.display = 'block';
+    
+    // Controlar visibilidad del botón "Anterior"
+    document.getElementById('btn-q-prev').style.visibility = (pasoActualCuestionario === 1) ? 'hidden' : 'visible';
+    
+    // Modificar texto del botón en el paso final
+    const nextBtn = document.getElementById('btn-q-next');
+    if (pasoActualCuestionario === TOTAL_PASOS_CUESTIONARIO) {
+        nextBtn.innerText = 'Finalizar';
+        nextBtn.onclick = finalizarCuestionarioYMostrarAsesores;
+    } else {
+        nextBtn.innerText = 'Siguiente';
+        if (pasoActualCuestionario === 1) {
+            nextBtn.onclick = validarPaso1YComenzar;
+        } else {
+            nextBtn.onclick = () => cambiarPasoCuestionario(1);
+        }
+    }
+    
+    // Actualizar porcentaje de la barra de progreso de forma proporcional
+    const porcentaje = Math.round((pasoActualCuestionario / TOTAL_PASOS_CUESTIONARIO) * 100);
+    document.getElementById('cuestionario-progress').style.width = `${porcentaje}%`;
+}
+
+/**
+ * Cierre maestro: Cierra el cuestionario, guarda los datos en LocalStorage y abre los asesores despues del Aceptar
+ */
+function finalizarCuestionarioYMostrarAsesores() {
+    if (typeof playClick === 'function') playClick();
+    
+    // Estampar la fecha y hora exacta de la interacción
+    DATA_PROSPECTO.fecha_registro = new Date().toLocaleString();
+    
+    // CONTROL INTERNO: Blindaje y Auditoría Gerencial
+    try {
+        let registrosExistentes = JSON.parse(localStorage.getItem('AUDITORIA_GERENCIAL_CARD')) || [];
+        registrosExistentes.push(DATA_PROSPECTO);
+        localStorage.setItem('AUDITORIA_GERENCIAL_CARD', JSON.stringify(registrosExistentes));
+    } catch (e) {
+        console.error("Error al blindar datos en almacenamiento local:", e);
+    }
+    
+    // 1. Cerrar el modal del cuestionario primero de forma limpia
+    document.getElementById('cuestionario-modal').style.display = 'none';
+    
+    // 2. Mostrar la leyenda de agradecimiento con botón Aceptar (usando el alert nativo)
+    alert("¡Muchas gracias! Tus datos han sido procesados de forma segura. Ahora puedes seleccionar a tu asesor especializado.");
+    
+    // 3. POTENCIA EXTERNA: Al dar clic en Aceptar, abrimos DIRECTAMENTE el menú de asesores
+    if (typeof abrirMenu === 'function') {
+        abrirMenu();
+    } else {
+        console.log("No se encontró la función abrirMenu");
+    }
 }

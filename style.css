@@ -300,3 +300,184 @@ body { background-color: var(--bg-premium); font-family: 'Montserrat', sans-seri
     padding-top: 4px;
     text-align: right;
 }
+
+/* Fuerza a que las flechas se muestren de forma predeterminada en el Lightbox */
+#lightbox .btn-nav-lightbox {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Oculta las flechas ÚNICAMENTE cuando se abra el perfil de un asesor */
+#lightbox.hide-nav-arrows .btn-nav-lightbox {
+    display: none !important;
+}
+/* ==========================================================================
+   CUESTIONARIO INTELIGENTE (POTENCIA EXTERNA + CONTROL INTERNO)
+   ========================================================================== */
+
+.cuestionario-card {
+    background-color: #111111; /* Fondo oscuro premium */
+    border: 2px solid var(--brand-accent, #f80101);
+    border-radius: 12px;
+    padding: 25px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.cuestionario-bienvenida {
+    color: #e0e0e0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin: 10px 0 15px 0;
+}
+
+/* Barra de progreso */
+.progress-bar-container {
+    background-color: #222222;
+    border-radius: 4px;
+    height: 6px;
+    width: 100%;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background-color: var(--brand-accent, #f80101);
+    height: 100%;
+    transition: width 0.3s ease;
+    width: 10%;
+}
+
+/* Pasos y textos */
+.cuestionario-paso h4 {
+    color: #ffffff;
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.paso-desc {
+    color: #888888;
+    font-size: 0.85rem;
+    margin: 0 0 15px 0;
+}
+
+/* Grupos de formularios (Paso 1) */
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    color: #cccccc;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input {
+    background-color: #1a1a1a;
+    border: 1px solid #333333;
+    border-radius: 6px;
+    color: #ffffff;
+    padding: 10px 12px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    border-color: var(--brand-accent, #f80101);
+    outline: none;
+}
+
+/* Contenedores de botones de opción */
+.opciones-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.opciones-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 5px;
+}
+
+/* Botones de opción interactivos */
+.btn-opcion-q {
+    background-color: #1a1a1a;
+    border: 1px solid #333333;
+    border-radius: 6px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 12px 15px;
+    text-align: left;
+    transition: all 0.2s ease;
+    width: 100%;
+    font-weight: 500;
+}
+
+.btn-opcion-q:hover {
+    border-color: var(--brand-accent, #f80101);
+    background-color: rgba(248, 1, 1, 0.05);
+}
+
+/* Estado seleccionado activo */
+.btn-opcion-q.active-q {
+    background-color: var(--brand-accent, #f80101) !important;
+    border-color: var(--brand-accent, #f80101) !important;
+    color: #ffffff !important;
+    font-weight: bold;
+}
+
+/* Botones inferiores de navegación */
+.btn-q-nav {
+    background-color: transparent;
+    border: 1px solid #444444;
+    border-radius: 6px;
+    color: #cccccc;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 10px 20px;
+    transition: all 0.2s;
+}
+
+.btn-q-nav:hover {
+    background-color: #222222;
+    color: #ffffff;
+}
+
+.btn-q-primario {
+    background-color: var(--brand-accent, #f80101);
+    border-color: var(--brand-accent, #f80101);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.btn-q-primario:hover {
+    background-color: #d00101;
+    border-color: #d00101;
+}
+
+/* Scrollbar personalizado para el modal */
+.cuestionario-card::-webkit-scrollbar {
+    width: 6px;
+}
+.cuestionario-card::-webkit-scrollbar-track {
+    background: #111111;
+}
+.cuestionario-card::-webkit-scrollbar-thumb {
+    background: #333333;
+    border-radius: 3px;
+}

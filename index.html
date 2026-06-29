@@ -24,10 +24,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <button id="btn-audio-control" class="audio-toggle" onclick="toggleAudioGlobal()">
-        <i id="audio-icon" class="fas fa-volume-up"></i>
-    </button>
-
+    
     <section id="portada-hub" class="main-hub">
         <header class="magazine-header">
             <div class="header-title-container">
@@ -80,7 +77,7 @@
             </div>
 
             <div class="mosaic-item lead-block">
-                <button type="button" onclick="abrirMenu()" class="btn-shiny-gold shine-effect">
+                <button type="button" onclick="abrirCuestionario()" class="btn-shiny-gold shine-effect">
                     <i class="fas fa-car-side" style="margin-right: 8px;"></i> ¡ELIGE A TU ASESOR ESPECIALIZADO!
                 </button>
             </div>
@@ -204,5 +201,180 @@
     </div>
 
     <script src="script.js"></script>
+    <!-- MODAL DEL CUESTIONARIO INTELIGENTE (POTENCIA EXTERNA + CONTROL INTERNO) -->
+<div id="cuestionario-modal" class="overlay-modal" style="display: none;" onclick="// Bloqueado click afuera para obligar a responder">
+    <div class="cuestionario-card" onclick="event.stopPropagation()">
+        
+        <!-- Encabezado de Bienvenida -->
+        <div id="cuestionario-header">
+            <div class="card-branding-header" style="display: flex; align-items: center;">
+                <img src="assets/brand/logo.png" class="card-logo" style="width: 40px; margin-right: 10px;">
+                <h3 style="color: var(--brand-accent, #f80101); margin: 0; font-size: 1.2rem;">Asistente Personalizado</h3>
+            </div>
+            <p class="cuestionario-bienvenida">¡Bienvenido/a! Permítenos ayudarte a encontrar al especialista ideal para ti. Solo te tomará unos segundos responder unas breves preguntas.</p>
+            <div class="progress-bar-container">
+                <div id="cuestionario-progress" class="progress-bar" style="width: 10%;"></div>
+            </div>
+            <hr class="gold-divider" style="border: 0; border-top: 1px solid var(--brand-accent, #f80101); margin: 15px 0;">
+        </div>
+
+        <!-- Pasos Dinámicos del Cuestionario -->
+        <div id="cuestionario-body">
+            
+            <!-- PASO 1: Datos Básicos -->
+            <div class="cuestionario-paso" id="paso-1">
+                <h4>PASO 1. Datos básicos del prospecto</h4>
+                <p class="paso-desc">Estos datos permiten dar seguimiento oportuno.</p>
+                <div class="form-group">
+                    <label>Nombre completo *</label>
+                    <input type="text" id="q-nombre" placeholder="Ej. Juan Pérez" required>
+                </div>
+                <div class="form-group">
+                    <label>WhatsApp *</label>
+                    <input type="tel" id="q-whatsapp" placeholder="Ej. 4491234567" required>
+                </div>
+                <div class="form-group">
+                    <label>Correo electrónico (opcional)</label>
+                    <input type="email" id="q-correo" placeholder="Ej. juan@correo.com">
+                </div>
+                <div class="form-group">
+                    <label>¿Cómo prefieres que te contactemos?</label>
+                    <div class="opciones-vertical">
+                        <button type="button" class="btn-opcion-q" onclick="guardarDatoPaso(1, 'contacto', 'WhatsApp')">WhatsApp</button>
+                        <button type="button" class="btn-opcion-q" onclick="guardarDatoPaso(1, 'contacto', 'Llamada')">Llamada</button>
+                        <button type="button" class="btn-opcion-q" onclick="guardarDatoPaso(1, 'contacto', 'Correo')">Correo</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PASO 2: Vehículo de interés -->
+            <div class="cuestionario-paso" id="paso-2" style="display:none;">
+                <h4>PASO 2. ¿Qué vehículo te interesa?</h4>
+                <p class="paso-desc">Informa al gerente qué modelos generan más interés en el mercado.</p>
+                <div class="opciones-grid">
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(2, 'modelo', 'Serie 1')">Serie 1</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(2, 'modelo', 'Serie 2')">Serie 2</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(2, 'modelo', 'Serie 3')">Serie 3</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(2, 'modelo', 'Serie 5')">Serie 5</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(2, 'modelo', 'X1')">X1</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(2, 'modelo', 'X3')">X3</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(2, 'modelo', 'X5')">X5</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(2, 'modelo', 'X7')">X7</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(2, 'modelo', 'M')">M</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(2, 'modelo', 'Eléctricos')">Eléctricos</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(2, 'modelo', 'Aún no lo sé')">Aún no lo sé</button>
+                </div>
+            </div>
+
+            <!-- PASO 3: Tipo de vehículo -->
+            <div class="cuestionario-paso" id="paso-3" style="display:none;">
+                <h4>PASO 3. ¿Qué tipo de vehículo buscas?</h4>
+                <p class="paso-desc">Perfilado inicial de la silueta automotriz.</p>
+                <div class="opciones-grid">
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(3, 'tipo', 'SUV')">SUV</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(3, 'tipo', 'Sedán')">Sedán</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(3, 'tipo', 'Deportivo')">Deportivo</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(3, 'tipo', 'Eléctrico')">Eléctrico</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(3, 'tipo', 'Híbrido')">Híbrido</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(3, 'tipo', 'Familiar')">Familiar</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(3, 'tipo', 'Ejecutivo')">Ejecutivo</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(3, 'tipo', 'Otro')">Otro</button>
+                </div>
+            </div>
+
+            <!-- PASO 4: Uso principal -->
+            <div class="cuestionario-paso" id="paso-4" style="display:none;">
+                <h4>PASO 4. ¿Para qué lo utilizarás principalmente?</h4>
+                <p class="paso-desc">Segmentación de la utilidad técnica comercial.</p>
+                <div class="opciones-grid">
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(4, 'uso', 'Uso personal')">Uso personal</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(4, 'uso', 'Uso familiar')">Uso familiar</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(4, 'uso', 'Empresa')">Empresa</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(4, 'uso', 'Uber / Didi Ejecutivo')">Uber/Didi Exec</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(4, 'uso', 'Viajes')">Viajes</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(4, 'uso', 'Trabajo')">Trabajo</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(4, 'uso', 'Otro')">Otro</button>
+                </div>
+            </div>
+
+            <!-- PASO 5: Temporalidad -->
+            <div class="cuestionario-paso" id="paso-5" style="display:none;">
+                <h4>PASO 5. ¿Cuándo planeas comprar?</h4>
+                <p class="paso-desc">Esta métrica de urgencia es oro para la gerencia.</p>
+                <div class="opciones-vertical">
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(5, 'tiempo', 'Esta semana')">Esta semana</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(5, 'tiempo', 'Este mes')">Este mes</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(5, 'tiempo', 'Dentro de 3 meses')">Dentro de 3 meses</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(5, 'tiempo', 'Dentro de 6 meses')">Dentro de 6 meses</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(5, 'tiempo', 'Solo estoy investigando')">Solo estoy investigando</button>
+                </div>
+            </div>
+
+            <!-- PASO 6: Método de adquisición -->
+            <div class="cuestionario-paso" id="paso-6" style="display:none;">
+                <h4>PASO 6. ¿Cómo piensas adquirirlo?</h4>
+                <p class="paso-desc">Perfilado del esquema financiero.</p>
+                <div class="opciones-vertical">
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(6, 'metodo', 'Contado')">Contado</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(6, 'metodo', 'Crédito')">Crédito</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(6, 'metodo', 'Arrendamiento')">Arrendamiento</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(6, 'metodo', 'Aún no lo sé')">Aún no lo sé</button>
+                </div>
+            </div>
+
+            <!-- PASO 7: Presupuesto -->
+            <div class="cuestionario-paso" id="paso-7" style="display:none;">
+                <h4>PASO 7. ¿Qué presupuesto aproximado tienes?</h4>
+                <p class="paso-desc">Clasificación del poder adquisitivo.</p>
+                <div class="opciones-vertical">
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(7, 'presupuesto', 'Menos de $700,000')">Menos de $700,000</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(7, 'presupuesto', '$700,000 a $1 millón')">$700,000 a $1 millón</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(7, 'presupuesto', '$1 a $1.5 millones')">$1 a $1.5 millones</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(7, 'presupuesto', 'Más de $1.5 millones')">Más de $1.5 millones</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(7, 'presupuesto', 'Prefiero no decirlo')">Prefiero no decirlo</button>
+                </div>
+            </div>
+
+            <!-- PASO 8: Promoción de interés -->
+            <div class="cuestionario-paso" id="paso-8" style="display:none;">
+                <h4>PASO 8. ¿Qué promoción te llamó más la atención?</h4>
+                <p class="paso-desc">Mide directamente la efectividad de las campañas activas.</p>
+                <div class="opciones-vertical">
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(8, 'promocion', 'Bono de verano')">Bono de verano</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(8, 'promocion', 'Tasa 8.99%')">Tasa 8.99%</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(8, 'promocion', 'Seguro gratis')">Seguro gratis</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(8, 'promocion', 'Mantenimiento')">Mantenimiento incluido</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(8, 'promocion', 'Test Drive')">Test Drive (Prueba de manejo)</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(8, 'promocion', 'Otro')">Otro</button>
+                </div>
+            </div>
+
+            <!-- PASO 9: Canal de origen -->
+            <div class="cuestionario-paso" id="paso-9" style="display:none;">
+                <h4>PASO 9. ¿Cómo conociste nuestra AGENCIA?</h4>
+                <p class="paso-desc">Auditoría pura de Retorno de Inversión (ROI) en publicidad.</p>
+                <div class="opciones-grid">
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Mi asesor')">Mi asesor</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Un amigo')">Un amigo</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Facebook')">Facebook</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Instagram')">Instagram</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'WhatsApp')">WhatsApp</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Google')">Google</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Sitio web')">Sitio web</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Código QR')">Código QR</button>
+                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Otro')">Otro</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Botones inferiores de navegación -->
+        <div class="cuestionario-footer" style="margin-top: 20px; display: flex; justify-content: space-between;">
+            <button id="btn-q-prev" class="btn-q-nav" onclick="cambiarPasoCuestionario(-1)" style="visibility: hidden;">Anterior</button>
+            <button id="btn-q-next" class="btn-q-nav btn-q-primario" onclick="validarPaso1YComenzar()">Siguiente</button>
+        </div>
+
+    </div>
+</div>
 </body>
 </html>
