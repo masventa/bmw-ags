@@ -480,33 +480,31 @@ function cambiarPasoCuestionario(direccion) {
 function finalizarCuestionarioYMostrarAsesores() {
     if (typeof playClick === 'function') playClick();
     
-    // --- AQUÍ ESTABA LA FALLA: Capturamos los valores del formulario ANTES de guardar ---
-    DATA_PROSPECTO.fecha_registro = new Date().toLocaleString();
-    DATA_PROSPECTO.nombre = document.getElementById('nombre')?.value || "";
-    DATA_PROSPECTO.whatsapp = document.getElementById('whatsapp')?.value || "";
-    // Aseguramos que otros campos también estén al día por si acaso
-    DATA_PROSPECTO.modelo = document.getElementById('modelo')?.value || DATA_PROSPECTO.modelo;
-    DATA_PROSPECTO.uso = document.getElementById('uso')?.value || DATA_PROSPECTO.uso;
+    // FORZAMOS la creación del objeto en el momento exacto del clic
+    // Esto asegura que no dependa de variables globales previas que puedan estar vacías
+    const dataCapturada = {
+        fecha_registro: new Date().toLocaleString(),
+        nombre: document.getElementById('nombre')?.value || "Sin nombre",
+        whatsapp: document.getElementById('whatsapp')?.value || "No reg.",
+        modelo: document.getElementById('modelo')?.value || "N/A",
+        uso: document.getElementById('uso')?.value || "N/A",
+        metodo: document.getElementById('metodo')?.value || "N/A", // Asegúrate que tu campo se llame 'metodo'
+        tiempo: document.getElementById('tiempo')?.value || "N/A"  // Asegúrate que tu campo se llame 'tiempo'
+    };
     
-    // CONTROL INTERNO: Blindaje y Auditoría Gerencial
+    // CONTROL INTERNO: Guardamos la variable capturada directamente
     try {
         let registrosExistentes = JSON.parse(localStorage.getItem('AUDITORIA_GERENCIAL_CARD')) || [];
-        registrosExistentes.push(DATA_PROSPECTO);
+        registrosExistentes.push(dataCapturada);
         localStorage.setItem('AUDITORIA_GERENCIAL_CARD', JSON.stringify(registrosExistentes));
     } catch (e) {
-        console.error("Error al blindar datos en almacenamiento local:", e);
+        console.error("Error al blindar datos:", e);
     }
     
-    // 1. Cerrar el modal del cuestionario primero de forma limpia
     document.getElementById('cuestionario-modal').style.display = 'none';
+    alert("¡Muchas gracias! Tus datos han sido procesados.");
     
-    // 2. Mostrar la leyenda de agradecimiento
-    alert("¡Muchas gracias! Tus datos han sido procesados de forma segura. Ahora puedes seleccionar a tu asesor especializado.");
-    
-    // 3. POTENCIA EXTERNA: Abrimos el menú de asesores
     if (typeof abrirMenu === 'function') {
         abrirMenu();
-    } else {
-        console.log("No se encontró la función abrirMenu");
     }
 }
