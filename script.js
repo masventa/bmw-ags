@@ -365,6 +365,7 @@ function abrirCuestionario() {
 
 /**
  * Valida los datos obligatorios del Paso 1 antes de permitir avanzar
+ * Versión robusta y blindada para asegurar la captura del prospecto
  */
 function validarPaso1YComenzar() {
     const nom = document.getElementById('q-nombre').value.trim();
@@ -376,7 +377,7 @@ function validarPaso1YComenzar() {
         return;
     }
     
-    // Guardar los primeros datos obligatorios
+    // Guardar los datos de forma explícita en la variable global DATA_PROSPECTO
     DATA_PROSPECTO.nombre = nom;
     DATA_PROSPECTO.whatsapp = tel;
     DATA_PROSPECTO.correo = corr ? corr : 'No proporcionado';
@@ -385,6 +386,11 @@ function validarPaso1YComenzar() {
     if (!DATA_PROSPECTO.contacto) {
         DATA_PROSPECTO.contacto = 'WhatsApp';
     }
+
+    // --- BLINDAJE EXTRA ---
+    // Nos aseguramos de que el nombre y teléfono queden registrados en el objeto 
+    // incluso si el usuario regresa al paso 1 después
+    localStorage.setItem('TMP_PROSPECTO_DATA', JSON.stringify({ nombre: nom, whatsapp: tel }));
     
     // Cambiar el evento del botón Siguiente para los pasos automáticos posteriores
     const nextBtn = document.getElementById('btn-q-next');
@@ -469,13 +475,18 @@ function cambiarPasoCuestionario(direccion) {
 }
 
 /**
- * Cierre maestro: Cierra el cuestionario, guarda los datos en LocalStorage y abre los asesores despues del Aceptar
+ * Cierre maestro: Actualiza los datos, guarda en LocalStorage y abre los asesores
  */
 function finalizarCuestionarioYMostrarAsesores() {
     if (typeof playClick === 'function') playClick();
     
-    // Estampar la fecha y hora exacta de la interacción
+    // --- AQUÍ ESTABA LA FALLA: Capturamos los valores del formulario ANTES de guardar ---
     DATA_PROSPECTO.fecha_registro = new Date().toLocaleString();
+    DATA_PROSPECTO.nombre = document.getElementById('nombre')?.value || "";
+    DATA_PROSPECTO.whatsapp = document.getElementById('whatsapp')?.value || "";
+    // Aseguramos que otros campos también estén al día por si acaso
+    DATA_PROSPECTO.modelo = document.getElementById('modelo')?.value || DATA_PROSPECTO.modelo;
+    DATA_PROSPECTO.uso = document.getElementById('uso')?.value || DATA_PROSPECTO.uso;
     
     // CONTROL INTERNO: Blindaje y Auditoría Gerencial
     try {
@@ -489,10 +500,10 @@ function finalizarCuestionarioYMostrarAsesores() {
     // 1. Cerrar el modal del cuestionario primero de forma limpia
     document.getElementById('cuestionario-modal').style.display = 'none';
     
-    // 2. Mostrar la leyenda de agradecimiento con botón Aceptar (usando el alert nativo)
+    // 2. Mostrar la leyenda de agradecimiento
     alert("¡Muchas gracias! Tus datos han sido procesados de forma segura. Ahora puedes seleccionar a tu asesor especializado.");
     
-    // 3. POTENCIA EXTERNA: Al dar clic en Aceptar, abrimos DIRECTAMENTE el menú de asesores
+    // 3. POTENCIA EXTERNA: Abrimos el menú de asesores
     if (typeof abrirMenu === 'function') {
         abrirMenu();
     } else {

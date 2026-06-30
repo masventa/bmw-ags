@@ -42,12 +42,12 @@ function cargarYProcesarAuditoria() {
     registros.forEach((prospecto, index) => {
         let score = 0;
         
-        // Extraemos las propiedades exactas de tu DATA_PROSPECTO
+        // Extraemos las propiedades exactas de tu estructura actual detectada
         const tiempoCompra = prospecto.tiempo || "";
         const metodoPago = prospecto.metodo || "";
         const usoDestinado = prospecto.uso || "";
         
-        // ALGORITMO DEL SEMÁFORO INTELIGENTE
+        // ALGORITMO DEL SEMÁFORO INTELIGENTE (Actualizado quirúrgicamente)
         // Evaluamos tiempo de compra (Hasta 50 puntos)
         if (tiempoCompra.toLowerCase().includes("semana") || tiempoCompra.toLowerCase().includes("inmediato")) {
             score += 50;
@@ -56,6 +56,53 @@ function cargarYProcesarAuditoria() {
         } else if (tiempoCompra.toLowerCase().includes("meses") || tiempoCompra.toLowerCase().includes("investigando")) {
             score += 10;
         }
+        
+        // Evaluamos método de pago (25 puntos) - Ajustado para detectar cualquier dato real
+        if (metodoPago !== "" && !metodoPago.toLowerCase().includes("sé") && !metodoPago.toLowerCase().includes("proporcionado")) {
+            score += 25;
+        }
+        
+        // Evaluamos uso destinado (25 puntos) - Ajustado para detectar cualquier dato real
+        if (usoDestinado !== "" && !usoDestinado.toLowerCase().includes("investigando") && !usoDestinado.toLowerCase().includes("proporcionado")) {
+            score += 25;
+        }
+        
+        // Clasificación de colores por puntuación
+        let claseBadge = ""; let textoSemaforo = "";
+        if (score >= 70) { // Ajuste fino para asegurar activación
+            claseBadge = "badge-verde"; textoSemaforo = "Luz Verde (Avanzar Ya)"; verdes++; 
+        } else if (score >= 40) { 
+            claseBadge = "badge-amarillo"; textoSemaforo = "Luz Amarilla (Acompañar)"; amarillos++; 
+        } else { 
+            claseBadge = "badge-rojo"; textoSemaforo = "Luz Roja (Esperar Cond.)"; rojos++; 
+        }
+        
+        // Asignación de datos limpios a la tabla (Usando las variables que detectamos)
+        let fecha = prospecto.fecha_registro || "No registrada";
+        let nombre = (prospecto.nombre && prospecto.nombre.trim() !== "") ? prospecto.nombre : "Sin nombre";
+        let whatsapp = (prospecto.whatsapp && prospecto.whatsapp.trim() !== "") ? prospecto.whatsapp : "No reg.";
+        let modelo = prospecto.modelo || "No definido";
+        let uso = usoDestinado || "No especificado";
+        
+        // Distribución equitativa rotativa entre tus 6 asesores reales
+        let asesor = ASESORES_BMW[index % ASESORES_BMW.length];
+        
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+            <td><span class="badge-semaforo ${claseBadge}">${textoSemaforo}</span></td>
+            <td>${fecha}</td>
+            <td style="font-weight:bold; color:#fff;">${nombre}</td>
+            <td>
+                <a href="https://wa.me/${whatsapp.replace(/\D/g, '')}" target="_blank" style="color:#00c851; text-decoration:none;">
+                    <i class="fab fa-whatsapp"></i> ${whatsapp}
+                </a>
+            </td>
+            <td><span style="color:#f80101; font-weight:bold;">${modelo}</span></td>
+            <td>${uso}</td>
+            <td style="color:#00f0ff; font-weight:bold;">${asesor}</td>
+        `;
+        tbody.appendChild(fila);
+    });
         
         // Evaluamos método de pago (25 puntos)
         if (metodoPago && !metodoPago.toLowerCase().includes("sé") && !metodoPago.toLowerCase().includes("proporcionado")) {
