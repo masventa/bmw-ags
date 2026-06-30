@@ -41,14 +41,12 @@ function cargarYProcesarAuditoria() {
     
     registros.forEach((prospecto, index) => {
         let score = 0;
-        
-        // Extraemos las propiedades exactas de tu estructura actual detectada
+
         const tiempoCompra = prospecto.tiempo || "";
         const metodoPago = prospecto.metodo || "";
         const usoDestinado = prospecto.uso || "";
-        
-        // ALGORITMO DEL SEMÁFORO INTELIGENTE (Actualizado quirúrgicamente)
-        // Evaluamos tiempo de compra (Hasta 50 puntos)
+
+        // ALGORITMO DEL SEMÁFORO
         if (tiempoCompra.toLowerCase().includes("semana") || tiempoCompra.toLowerCase().includes("inmediato")) {
             score += 50;
         } else if (tiempoCompra.toLowerCase().includes("mes") && !tiempoCompra.toLowerCase().includes("3")) {
@@ -56,7 +54,33 @@ function cargarYProcesarAuditoria() {
         } else if (tiempoCompra.toLowerCase().includes("meses") || tiempoCompra.toLowerCase().includes("investigando")) {
             score += 10;
         }
-        
+
+        // Clasificación de colores
+        let claseBadge = ""; let textoSemaforo = "";
+        if (score >= 70) { 
+            claseBadge = "badge-verde"; textoSemaforo = "Luz Verde (Avanzar Ya)"; verdes++; 
+        } else if (score >= 40) { 
+            claseBadge = "badge-amarillo"; textoSemaforo = "Luz Amarilla (Acompañar)"; amarillos++; 
+        } else { 
+            claseBadge = "badge-rojo"; textoSemaforo = "Luz Roja (Esperar Cond.)"; rojos++; 
+        }
+
+        // Generación de fila
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+            <td><span class="badge-semaforo ${claseBadge}">${textoSemaforo}</span></td>
+            <td>${prospecto.fecha_registro || "S/F"}</td>
+            <td>${prospecto.nombre || "Sin nombre"}</td>
+            <td>${prospecto.whatsapp || "No reg."}</td>
+            <td>${prospecto.modelo || "N/A"}</td>
+            <td>${prospecto.uso || "N/A"}</td>
+            <td>${ASESORES_BMW[index % ASESORES_BMW.length]}</td>
+        `;
+        tbody.appendChild(fila);
+    });
+
+    actualizarIndicadoresKPI(total, verdes, amarillos, rojos);
+}
         // Evaluamos método de pago (25 puntos) - Ajustado para detectar cualquier dato real
         if (metodoPago !== "" && !metodoPago.toLowerCase().includes("sé") && !metodoPago.toLowerCase().includes("proporcionado")) {
             score += 25;
