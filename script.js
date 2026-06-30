@@ -407,8 +407,9 @@ function guardarDatoPaso(pasoNum, campoKey, valorSeleccionado) {
     const contenedorPaso = document.getElementById(`paso-${pasoNum}`);
     if (contenedorPaso) {
         contenedorPaso.querySelectorAll('.btn-opcion-q').forEach(btn => {
+            const clickAttr = btn.getAttribute('onclick');
             if (btn.innerText.trim().toLowerCase() === valorSeleccionado.toLowerCase() || 
-                (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${valorSeleccionado}'`))) {
+                (clickAttr && clickAttr.includes(`'${valorSeleccionado}'`))) {
                 btn.classList.add('active-q');
             } else {
                 btn.classList.remove('active-q');
@@ -416,25 +417,16 @@ function guardarDatoPaso(pasoNum, campoKey, valorSeleccionado) {
         });
     }
 
-    // Avance automático inteligente transcurridos 250 milisegundos para dar feedback visual
-    // Como esta función SOLO se ejecuta del paso 2 al 9, aquí sí es seguro avanzar en automático
-    setTimeout(() => {
-        if (pasoActualCuestionario < TOTAL_PASOS_CUESTIONARIO) {
-            cambiarPasoCuestionario(1); // Avanza al siguiente paso (+1)
-        } else {
-            finalizarCuestionarioYMostrarAsesores();
-        }
-    }, 250);
-}
-    
-    // Avance automático inteligente transcurridos 250 milisegundos para dar feedback visual
-    setTimeout(() => {
-        if (pasoActualCuestionario < TOTAL_PASOS_CUESTIONARIO) {
+    // Avanzar automáticamente o mostrar asesores si es el último paso
+    if (pasoActualCuestionario < TOTAL_PASOS_CUESTIONARIO) {
+        if (typeof cambiarPasoCuestionario === 'function') {
             cambiarPasoCuestionario(1);
-        } else {
+        }
+    } else {
+        if (typeof finalizarCuestionarioYMostrarAsesores === 'function') {
             finalizarCuestionarioYMostrarAsesores();
         }
-    }, 250);
+    }
 }
 
 /**
