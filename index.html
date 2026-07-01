@@ -351,23 +351,29 @@
             </div>
 
             <!-- PASO 9: Canal de origen -->
-            <div class="cuestionario-paso" id="paso-9" style="display:none;">
-                <h4>PASO 9. ¿Cómo conociste nuestra AGENCIA?</h4>
-                <p class="paso-desc">Auditoría pura de Retorno de Inversión (ROI) en publicidad.</p>
-                <div class="opciones-grid">
-                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Mi asesor')">Mi asesor</button>
-                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Un amigo')">Un amigo</button>
-                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Facebook')">Facebook</button>
-                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Instagram')">Instagram</button>
-                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'WhatsApp')">WhatsApp</button>
-                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Google')">Google</button>
-                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Sitio web')">Sitio web</button>
-                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Código QR')">Código QR</button>
-                    <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Otro')">Otro</button>
-                </div>
-            </div>
-
-        </div>
+<div class="cuestionario-paso" id="paso-9" style="display:none;">
+    <h4>PASO 9. ¿Cómo conociste nuestra AGENCIA?</h4>
+    <p class="paso-desc">Auditoría pura de Retorno de Inversión (ROI) en publicidad.</p>
+    <div class="opciones-grid">
+        <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Mi asesor')">Mi asesor</button>
+        <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Un amigo')">Un amigo</button>
+        <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Facebook')">Facebook</button>
+        <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Instagram')">Instagram</button>
+        <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'WhatsApp')">WhatsApp</button>
+        <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Google')">Google</button>
+        <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Sitio web')">Sitio web</button>
+        <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Código QR')">Código QR</button>
+        <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Otro')">Otro</button>
+    </div>
+    <div style="margin-top: 20px; padding: 15px; border-top: 2px solid #f80101;">
+        <p style="font-size: 0.9em;">Después de recibir tu formulario, te recomendamos: <strong>ASESOR 1</strong>. Si prefieres otro, elígelo:</p>
+        <select id="asesor-selector" onchange="guardarDatoPaso(9, 'asesor', this.value)" style="width: 100%; padding: 10px;">
+            <option value="ASESOR 1">ASESOR 1 (Recomendado)</option>
+            <option value="ASESOR 2">ASESOR 2</option>
+            <option value="ASESOR 3">ASESOR 3</option>
+        </select>
+    </div>
+</div>
 
         <!-- Botones inferiores de navegación -->
         <div class="cuestionario-footer" style="margin-top: 20px; display: flex; justify-content: space-between;">
