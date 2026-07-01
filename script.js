@@ -492,11 +492,11 @@ function finalizarCuestionarioYMostrarAsesores() {
     DATA_PROSPECTO.uso = document.getElementById('uso')?.value || DATA_PROSPECTO.uso;
     
     // --- LÓGICA INTEGRADA DE SEMÁFORO Y ASESOR ---
-    // 1. Semáforo basado en el tiempo
-    let t = DATA_PROSPECTO.tiempo || "";
-    if (t === "Esta semana" || t === "Este mes") {
+    // 1. Semáforo basado en el tiempo (Mejorado para detectar variaciones en el texto)
+    let t = (DATA_PROSPECTO.tiempo || "").toString().toLowerCase();
+    if (t.includes("semana") || t.includes("mes")) {
         DATA_PROSPECTO.semaforo = "Verde";
-    } else if (t === "Dentro de 3 meses") {
+    } else if (t.includes("3 meses")) {
         DATA_PROSPECTO.semaforo = "Amarillo";
     } else {
         DATA_PROSPECTO.semaforo = "Rojo";

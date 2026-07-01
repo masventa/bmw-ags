@@ -367,7 +367,7 @@
     </div>
     <div style="margin-top: 20px; padding: 15px; border-top: 2px solid #f80101;">
         <p style="font-size: 0.9em;">Después de recibir tu formulario, te recomendamos: <strong>ASESOR 1</strong>. Si prefieres otro, elígelo:</p>
-        <select id="asesor-selector" onchange="guardarDatoPaso(9, 'asesor', this.value)" style="width: 100%; padding: 10px;">
+        <select id="asesor-selector" style="width: 100%; padding: 10px;">
             <option value="ASESOR 1">ASESOR 1 (Recomendado)</option>
             <option value="ASESOR 2">ASESOR 2</option>
             <option value="ASESOR 3">ASESOR 3</option>
@@ -384,13 +384,8 @@
     </div>
 </div>
 
-        <!-- Botones inferiores de navegación -->
-        <div class="cuestionario-footer" style="margin-top: 20px; display: flex; justify-content: space-between;">
-            <button id="btn-q-prev" class="btn-q-nav" onclick="cambiarPasoCuestionario(-1)" style="visibility: hidden;">Anterior</button>
-            <button id="btn-q-next" class="btn-q-nav btn-q-primario" onclick="validarPaso1YComenzar()">Siguiente</button>
-        </div>
-
-    </div>
+<!-- Botones inferiores de navegación -->
+<div class="cuestionario-footer" style="margin-top: 20px; display: flex; justify-content: space-between;">
+    <button id="btn-q-prev" class="btn-q-nav" onclick="cambiarPasoCuestionario(-1)" style="visibility: hidden;">Anterior</button>
+    <button id="btn-q-next" class="btn-q-nav btn-q-primario" onclick="validarPaso1YComenzar()">Siguiente</button>
 </div>
-</body>
-</html>
