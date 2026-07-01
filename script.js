@@ -502,9 +502,10 @@ function finalizarCuestionarioYMostrarAsesores() {
         DATA_PROSPECTO.semaforo = "Rojo";
     }
 
-    // 2. Asesor capturado del nuevo selector
+    // 2. Asesor capturado del selector (id="asesor-selector" que está en el paso 9)
     let asesorSelect = document.getElementById('asesor-selector');
-    DATA_PROSPECTO.asesor = asesorSelect ? asesorSelect.value : "ASESOR 1";
+    // Si el valor existe en el selector, lo tomamos; si no, dejamos el que ya estaba o asignamos el predeterminado
+    DATA_PROSPECTO.asesor = (asesorSelect && asesorSelect.value) ? asesorSelect.value : (DATA_PROSPECTO.asesor || "ASESOR 1");
     
     // CONTROL INTERNO: Blindaje y Auditoría Gerencial
     try {
