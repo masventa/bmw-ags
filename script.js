@@ -480,31 +480,35 @@ function cambiarPasoCuestionario(direccion) {
 function finalizarCuestionarioYMostrarAsesores() {
     if (typeof playClick === 'function') playClick();
     
-    // FORZAMOS la creación del objeto en el momento exacto del clic
-    // Esto asegura que no dependa de variables globales previas que puedan estar vacías
-    const dataCapturada = {
-        fecha_registro: new Date().toLocaleString(),
-        nombre: document.getElementById('nombre')?.value || "Sin nombre",
-        whatsapp: document.getElementById('whatsapp')?.value || "No reg.",
-        modelo: document.getElementById('modelo')?.value || "N/A",
-        uso: document.getElementById('uso')?.value || "N/A",
-        metodo: document.getElementById('metodo')?.value || "N/A", // Asegúrate que tu campo se llame 'metodo'
-        tiempo: document.getElementById('tiempo')?.value || "N/A"  // Asegúrate que tu campo se llame 'tiempo'
-    };
+    // --- AQUÍ ESTABA LA FALLA: Capturamos los valores del formulario ANTES de guardar ---
+    DATA_PROSPECTO.fecha_registro = new Date().toLocaleString();
+    // Usamos los IDs correctos que confirmamos (q-nombre y q-whatsapp)
+    DATA_PROSPECTO.nombre = document.getElementById('q-nombre')?.value || DATA_PROSPECTO.nombre;
+    DATA_PROSPECTO.whatsapp = document.getElementById('q-whatsapp')?.value || DATA_PROSPECTO.whatsapp;
     
-    // CONTROL INTERNO: Guardamos la variable capturada directamente
+    // Aseguramos que otros campos también estén al día por si acaso
+    DATA_PROSPECTO.modelo = document.getElementById('modelo')?.value || DATA_PROSPECTO.modelo;
+    DATA_PROSPECTO.uso = document.getElementById('uso')?.value || DATA_PROSPECTO.uso;
+    
+    // CONTROL INTERNO: Blindaje y Auditoría Gerencial
     try {
         let registrosExistentes = JSON.parse(localStorage.getItem('AUDITORIA_GERENCIAL_CARD')) || [];
-        registrosExistentes.push(dataCapturada);
+        registrosExistentes.push(DATA_PROSPECTO);
         localStorage.setItem('AUDITORIA_GERENCIAL_CARD', JSON.stringify(registrosExistentes));
     } catch (e) {
-        console.error("Error al blindar datos:", e);
+        console.error("Error al blindar datos en almacenamiento local:", e);
     }
     
+    // 1. Cerrar el modal del cuestionario primero de forma limpia
     document.getElementById('cuestionario-modal').style.display = 'none';
-    alert("¡Muchas gracias! Tus datos han sido procesados.");
     
+    // 2. Mostrar la leyenda de agradecimiento
+    alert("¡Muchas gracias! Tus datos han sido procesados de forma segura. Ahora puedes seleccionar a tu asesor especializado.");
+    
+    // 3. POTENCIA EXTERNA: Abrimos el menú de asesores
     if (typeof abrirMenu === 'function') {
         abrirMenu();
+    } else {
+        console.log("No se encontró la función abrirMenu");
     }
 }
