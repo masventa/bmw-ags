@@ -317,7 +317,7 @@ let DATA_PROSPECTO = {
 };
 
 let pasoActualCuestionario = 1;
-const TOTAL_PASOS_CUESTIONARIO = 9;
+const TOTAL_PASOS_CUESTIONARIO = 10;
 
 /**
  * Abre el asistente interactivo del cuestionario
@@ -437,6 +437,7 @@ function guardarDatoPaso(pasoNum, campoKey, valorSeleccionado) {
 
 /**
  * Controla la navegación general (Adelante / Atrás) y actualiza la barra de progreso
+ * AHORA FUERZA EL LÍMITE HASTA 10 PASOS
  */
 function cambiarPasoCuestionario(direccion) {
     if (typeof playClick === 'function') playClick();
@@ -448,6 +449,9 @@ function cambiarPasoCuestionario(direccion) {
     // Calcular nuevo paso
     pasoActualCuestionario += direccion;
     
+    // Si el paso se pasó de 10, lo regresamos a 10 (esto desbloquea el paso 10)
+    if (pasoActualCuestionario > 10) pasoActualCuestionario = 10;
+    
     // Mostrar nuevo paso
     const nuevoPasoEl = document.getElementById(`paso-${pasoActualCuestionario}`);
     if (nuevoPasoEl) nuevoPasoEl.style.display = 'block';
@@ -457,7 +461,8 @@ function cambiarPasoCuestionario(direccion) {
     
     // Modificar texto del botón en el paso final
     const nextBtn = document.getElementById('btn-q-next');
-    if (pasoActualCuestionario === TOTAL_PASOS_CUESTIONARIO) {
+    // FORZAMOS EL FINAL EN 10
+    if (pasoActualCuestionario === 10) {
         nextBtn.innerText = 'Finalizar';
         nextBtn.onclick = finalizarCuestionarioYMostrarAsesores;
     } else {
@@ -469,8 +474,8 @@ function cambiarPasoCuestionario(direccion) {
         }
     }
     
-    // Actualizar porcentaje de la barra de progreso de forma proporcional
-    const porcentaje = Math.round((pasoActualCuestionario / TOTAL_PASOS_CUESTIONARIO) * 100);
+    // Actualizar barra de progreso (usando 10 como base)
+    const porcentaje = Math.round((pasoActualCuestionario / 10) * 100);
     document.getElementById('cuestionario-progress').style.width = `${porcentaje}%`;
 }
 

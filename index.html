@@ -350,10 +350,10 @@
                 </div>
             </div>
 
-            <!-- PASO 9: Canal de origen -->
-<div class="cuestionario-paso" id="paso-9" style="display:none;">
+            <!-- PASO 9: Canal de origen y Selección de Asesor -->
+<<div class="cuestionario-paso" id="paso-9" style="display:none;">
     <h4>PASO 9. ¿Cómo conociste nuestra AGENCIA?</h4>
-    <p class="paso-desc">Auditoría pura de Retorno de Inversión (ROI) en publicidad.</p>
+    <p>Auditoría pura de Retorno de Inversión (ROI) en publicidad.</p>
     <div class="opciones-grid">
         <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Mi asesor')">Mi asesor</button>
         <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Un amigo')">Un amigo</button>
@@ -365,27 +365,30 @@
         <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Código QR')">Código QR</button>
         <button class="btn-opcion-q" onclick="guardarDatoPaso(9, 'origen', 'Otro')">Otro</button>
     </div>
+    
+    <div class="cuestionario-footer" style="margin-top: 20px; display: flex; justify-content: space-between;">
+        <button id="btn-q-prev" class="btn-q-nav" onclick="cambiarPasoCuestionario(-1)">Anterior</button>
+        <button id="btn-q-next" class="btn-q-nav" onclick="cambiarPasoCuestionario(1)">Siguiente</button>
+    </div>
+</div>
+
+<div class="cuestionario-paso" id="paso-10" style="display:none;">
+    <h4>PASO 10. Selecciona a tu asesor</h4>
     <div style="margin-top: 20px; padding: 15px; border-top: 2px solid #f80101;">
-        <p style="font-size: 0.9em;">Después de recibir tu formulario, te recomendamos: <strong>ASESOR 1</strong>. Si prefieres otro, elígelo:</p>
-        <select id="asesor-selector" style="width: 100%; padding: 10px;">
-            <option value="ASESOR 1">ASESOR 1 (Recomendado)</option>
+        <p>Para brindarte una atención personalizada, elige a tu asesor de confianza:</p>
+        <select id="asesor-selector" style="width: 100%; padding: 10px; margin-top: 10px;">
+            <option value="ASESOR 1">ASESOR 1</option>
             <option value="ASESOR 2">ASESOR 2</option>
             <option value="ASESOR 3">ASESOR 3</option>
+            <option value="ASESOR 4">ASESOR 4</option>
+            <option value="ASESOR 5">ASESOR 5</option>
+            <option value="ASESOR 6">ASESOR 6</option>
         </select>
     </div>
-</div>
-
-<!-- PASO 10: Finalización -->
-<div class="cuestionario-paso" id="paso-10" style="display:none;">
-    <h4>PASO 10. Confirmación Final</h4>
-    <p class="paso-desc">Has seleccionado tu asesor y el origen de tu contacto. Todo está listo.</p>
-    <div class="opciones-grid">
-        <button class="btn-opcion-q" style="background-color: #f80101; color: white; border: none; padding: 15px; width: 100%;" onclick="finalizarCuestionarioYMostrarAsesores()">FINALIZAR Y ENVIAR</button>
+    <div style="margin-top: 20px;">
+        <button style="width: 100%; padding: 15px; background-color: #f80101; color: white; border: none; cursor: pointer;" onclick="finalizarCuestionarioYMostrarAsesores()">FINALIZAR Y ENVIAR</button>
     </div>
-</div>
-
-<!-- Botones inferiores de navegación -->
-<div class="cuestionario-footer" style="margin-top: 20px; display: flex; justify-content: space-between;">
-    <button id="btn-q-prev" class="btn-q-nav" onclick="cambiarPasoCuestionario(-1)" style="visibility: hidden;">Anterior</button>
-    <button id="btn-q-next" class="btn-q-nav btn-q-primario" onclick="validarPaso1YComenzar()">Siguiente</button>
+    <div class="cuestionario-footer" style="margin-top: 20px;">
+        <button id="btn-q-prev" class="btn-q-nav" onclick="cambiarPasoCuestionario(-1)">Anterior</button>
+    </div>
 </div>
