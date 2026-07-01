@@ -480,35 +480,56 @@ function cambiarPasoCuestionario(direccion) {
 function finalizarCuestionarioYMostrarAsesores() {
     if (typeof playClick === 'function') playClick();
     
-    // --- AQUÍ ESTABA LA FALLA: Capturamos los valores del formulario ANTES de guardar ---
+    // 1. CAPTURA DE DATOS BÁSICOS
     DATA_PROSPECTO.fecha_registro = new Date().toLocaleString();
-    // Usamos los IDs correctos que confirmamos (q-nombre y q-whatsapp)
     DATA_PROSPECTO.nombre = document.getElementById('q-nombre')?.value || DATA_PROSPECTO.nombre;
     DATA_PROSPECTO.whatsapp = document.getElementById('q-whatsapp')?.value || DATA_PROSPECTO.whatsapp;
-    
-    // Aseguramos que otros campos también estén al día por si acaso
     DATA_PROSPECTO.modelo = document.getElementById('modelo')?.value || DATA_PROSPECTO.modelo;
     DATA_PROSPECTO.uso = document.getElementById('uso')?.value || DATA_PROSPECTO.uso;
     
+    // 2. CAPTURA A PRUEBA DE FALLOS (Busca el valor seleccionado directamente en el formulario)
+    // Buscamos todos los selects del formulario
+    let selects = document.querySelectorAll('select');
+    let valTiempo = "";
+    let valAsesor = "";
+
+    selects.forEach(s => {
+        let texto = s.options[s.selectedIndex].text;
+        // Si el texto de la opción contiene palabras clave de tiempo, es el campo de tiempo
+        if (texto.includes("semana") || texto.includes("mes") || texto.includes("investigando")) {
+            valTiempo = texto;
+        }
+        // Si el texto contiene la palabra Asesor, es el campo de asesor
+        if (texto.toLowerCase().includes("asesor")) {
+            valAsesor = texto;
+        }
+    });
+
+    // 3. LÓGICA DE SEMÁFORO (Basada en el texto real que leyó el sistema)
+    if (valTiempo.includes("Esta semana") || valTiempo.includes("Este mes")) {
+        DATA_PROSPECTO.semaforo = "Verde";
+    } else if (valTiempo.includes("Dentro de 3 meses")) {
+        DATA_PROSPECTO.semaforo = "Amarillo";
+    } else {
+        DATA_PROSPECTO.semaforo = "Rojo";
+    }
+    
+    // 4. LÓGICA DE ASESOR (Guarda exactamente lo que el cliente eligió en el formulario)
+    DATA_PROSPECTO.asesor = valAsesor || "Asesor General";
+
     // CONTROL INTERNO: Blindaje y Auditoría Gerencial
     try {
         let registrosExistentes = JSON.parse(localStorage.getItem('AUDITORIA_GERENCIAL_CARD')) || [];
         registrosExistentes.push(DATA_PROSPECTO);
         localStorage.setItem('AUDITORIA_GERENCIAL_CARD', JSON.stringify(registrosExistentes));
     } catch (e) {
-        console.error("Error al blindar datos en almacenamiento local:", e);
+        console.error("Error al blindar datos:", e);
     }
     
-    // 1. Cerrar el modal del cuestionario primero de forma limpia
     document.getElementById('cuestionario-modal').style.display = 'none';
+    alert("¡Muchas gracias! Tus datos han sido procesados correctamente.");
     
-    // 2. Mostrar la leyenda de agradecimiento
-    alert("¡Muchas gracias! Tus datos han sido procesados de forma segura. Ahora puedes seleccionar a tu asesor especializado.");
-    
-    // 3. POTENCIA EXTERNA: Abrimos el menú de asesores
     if (typeof abrirMenu === 'function') {
         abrirMenu();
-    } else {
-        console.log("No se encontró la función abrirMenu");
     }
 }
