@@ -32,31 +32,19 @@ function cargarYProcesarAuditoria() {
     let verdes = 0; let amarillos = 0; let rojos = 0;
     
     if (total === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#555; padding: 20px;">No hay registros de prospectos todavía. Envía un formulario desde la CARD para ver los resultados.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#555; padding: 20px;">No hay registros de prospectos todavía.</td></tr>`;
         actualizarIndicadoresKPI(0, 0, 0, 0);
         return;
     }
     
-    registros.forEach((prospecto, index) => {
-        let score = 0;
-        
-        const tiempoCompra = prospecto.tiempo || "";
-        const metodoPago = prospecto.metodo || "";
-        const usoDestinado = prospecto.uso || "";
-        
-        // Algoritmo de puntuación
-        if (tiempoCompra.toLowerCase().includes("semana") || tiempoCompra.toLowerCase().includes("inmediato")) score += 50;
-        else if (tiempoCompra.toLowerCase().includes("mes") && !tiempoCompra.toLowerCase().includes("3")) score += 30;
-        else if (tiempoCompra.toLowerCase().includes("meses") || tiempoCompra.toLowerCase().includes("investigando")) score += 10;
-        
-        if (metodoPago !== "" && !metodoPago.toLowerCase().includes("sé") && !metodoPago.toLowerCase().includes("proporcionado")) score += 25;
-        if (usoDestinado !== "" && !usoDestinado.toLowerCase().includes("investigando") && !usoDestinado.toLowerCase().includes("proporcionado")) score += 25;
-        
-        // Clasificación de colores
+    registros.forEach((prospecto) => {
+        // Lógica de Semáforo basada en el dato 'prioridad' guardado desde el Paso 5
+        let prioridad = prospecto.prioridad || "rojo"; // Por defecto rojo si no se encuentra
         let claseBadge = ""; let textoSemaforo = "";
-        if (score >= 75) { 
+
+        if (prioridad === 'verde') { 
             claseBadge = "badge-verde"; textoSemaforo = "Luz Verde (Avanzar Ya)"; verdes++; 
-        } else if (score >= 40) { 
+        } else if (prioridad === 'amarillo') { 
             claseBadge = "badge-amarillo"; textoSemaforo = "Luz Amarilla (Acompañar)"; amarillos++; 
         } else { 
             claseBadge = "badge-rojo"; textoSemaforo = "Luz Roja (Esperar Cond.)"; rojos++; 
@@ -66,8 +54,8 @@ function cargarYProcesarAuditoria() {
         let nombre = prospecto.nombre || "Sin nombre";
         let whatsapp = prospecto.whatsapp || "No reg.";
         let modelo = prospecto.modelo || "No definido";
-        let uso = usoDestinado || "No especificado";
-        let asesor = ASESORES_BMW[index % ASESORES_BMW.length];
+        let uso = prospecto.uso || "No especificado";
+        let asesor = prospecto.asesor || "No asignado";
         
         const fila = document.createElement('tr');
         fila.innerHTML = `
@@ -101,11 +89,10 @@ function exportarAExcel() {
     if (registros.length === 0) { alert("No hay datos para exportar."); return; }
     
     let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; 
-    csvContent += "Fecha,Prospecto,WhatsApp,Modelo Interes,Uso Destinado,Tiempo Compra,Metodo Pago,Asesor Asignado\n";
+    csvContent += "Fecha,Prospecto,WhatsApp,Modelo Interes,Uso Destinado,Prioridad,Asesor Asignado\n";
     
-    registros.forEach((p, index) => {
-        let asesor = ASESORES_BMW[index % ASESORES_BMW.length];
-        csvContent += `"${p.fecha_registro || ''}","${p.nombre || ''}","${p.whatsapp || ''}","${p.modelo || ''}","${p.uso || ''}","${p.tiempo || ''}","${p.metodo || ''}","${asesor}"\n`;
+    registros.forEach((p) => {
+        csvContent += `"${p.fecha_registro || ''}","${p.nombre || ''}","${p.whatsapp || ''}","${p.modelo || ''}","${p.uso || ''}","${p.prioridad || ''}","${p.asesor || ''}"\n`;
     });
     
     const encodedUri = encodeURI(csvContent);

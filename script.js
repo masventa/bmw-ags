@@ -437,7 +437,6 @@ function guardarDatoPaso(pasoNum, campoKey, valorSeleccionado) {
 
 /**
  * Controla la navegación general (Adelante / Atrás) y actualiza la barra de progreso
- * AHORA FUERZA EL LÍMITE HASTA 10 PASOS
  */
 function cambiarPasoCuestionario(direccion) {
     if (typeof playClick === 'function') playClick();
@@ -449,7 +448,8 @@ function cambiarPasoCuestionario(direccion) {
     // Calcular nuevo paso
     pasoActualCuestionario += direccion;
     
-    // Si el paso se pasó de 10, lo regresamos a 10 (esto desbloquea el paso 10)
+    // Validar límites: asegurar que no sea menor a 1 ni mayor a 10
+    if (pasoActualCuestionario < 1) pasoActualCuestionario = 1;
     if (pasoActualCuestionario > 10) pasoActualCuestionario = 10;
     
     // Mostrar nuevo paso
@@ -461,7 +461,6 @@ function cambiarPasoCuestionario(direccion) {
     
     // Modificar texto del botón en el paso final
     const nextBtn = document.getElementById('btn-q-next');
-    // FORZAMOS EL FINAL EN 10
     if (pasoActualCuestionario === 10) {
         nextBtn.innerText = 'Finalizar';
         nextBtn.onclick = finalizarCuestionarioYMostrarAsesores;
@@ -474,7 +473,7 @@ function cambiarPasoCuestionario(direccion) {
         }
     }
     
-    // Actualizar barra de progreso (usando 10 como base)
+    // Actualizar barra de progreso
     const porcentaje = Math.round((pasoActualCuestionario / 10) * 100);
     document.getElementById('cuestionario-progress').style.width = `${porcentaje}%`;
 }
